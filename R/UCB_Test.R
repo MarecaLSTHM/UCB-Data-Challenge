@@ -14,8 +14,4 @@ usethis::use_git_config(
 
 # Testing 123!
 
-
-
-
-
 #leon was testing this 
