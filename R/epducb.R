@@ -3,7 +3,7 @@ install.packages("sf")
 library(sf)
 
 #data11=biphosphonates data from open prescribing
-data11 <- read_csv("data11.csv")
+data11 <- read_csv("data/data11.csv")
 
 #Number of regions
 select(data11,name) %>% unique %>% nrow
@@ -51,7 +51,7 @@ ggplot(prescription_data_grouped, aes(x = Year, y = Total_Prescriptions, group =
 
 
 #Shape file from ONS
-regions <- st_read("NHSER_APR_2021_EN_BFC.shp")
+regions <- st_read("data/NHSER_APR_2021_EN_BFC.shp")
 
 #arrange alphabetically
 regions <- regions%>% arrange(NHSER21NM)
