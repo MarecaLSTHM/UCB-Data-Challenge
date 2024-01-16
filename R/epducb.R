@@ -1,6 +1,12 @@
 library(tidyverse)
-install.packages("sf")
 library(sf)
+library(here)
+library(dplyr)
+library(kableExtra)
+here()
+setwd(here())
+
+
 
 #data11=biphosphonates data from open prescribing
 data11 <- read_csv("data/data11.csv")
@@ -21,12 +27,14 @@ data11 <- data11%>%
 data11$date <- as.Date(data11$date, format = "%y%m%d")
 
 # Plotting the time series for the entire country(1st try, not much inference)
-ggplot(data11, aes(x = date, y = y_items_scaled, group = 1)) +
+ggplot(data11, aes(x = date, y = y_items, group = 1)) +
   geom_line() +
   labs(title = "Prescription Trends Over Time",
        x = "Date",
-       y = "Number of Prescriptions(1000s)") +
+       y = "Number of Prescriptions") +
   theme_minimal()
+#note you did not use 1000s as a 
+##2nd this is a bit sus at the very le
 
 #group total number of items per year
 prescription_data_grouped <- data11 %>%
@@ -71,7 +79,7 @@ total_prescriptions_by_region <- total_prescriptions_by_region%>% arrange(name)
 #auto assign region_id to match ONS
 total_prescriptions_by_region <- total_prescriptions_by_region %>%
   mutate(region_id = row_number())
-
+region_id <- total_prescriptions_by_region[,c("name","region_id")]
 #merge ONS shapefile and our dataset
 merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_id")
 
@@ -88,4 +96,171 @@ ggplot(merged_data) +
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank())
 
+png(filename = "outputs/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
+ggplot(merged_data) +
+  geom_sf(aes(fill = total_prescriptions), color = "white", lwd = 0.1) +
+  scale_fill_gradient(low = "orange", high = "red", name = "Total Prescriptions") +
+  labs(title = "Bisphosphonate 5 years prescription") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),   
+        axis.ticks = element_blank())
+dev.off()
+
 #We can add labels on the regions too for proper identification
+
+df_alendronic_acid=read.csv('data/alendronic_acid.csv')
+df_alendronic_acid <- df_alendronic_acid[, c(1,2,3,4)]
+names(df_alendronic_acid)[names(df_alendronic_acid) == "y_items"] <- "alendronic_acid"
+
+df_risedronate=read.csv('data/risedronate.csv')
+df_risedronate <- df_risedronate[, c(1,2,3,4)]
+names(df_risedronate)[names(df_risedronate) == "y_items"] <- "risedronate"
+
+
+df_etidronate=read.csv('data/etidronate.csv')
+df_etidronate <- df_etidronate[, c(1,2,3,4)]
+names(df_etidronate)[names(df_etidronate) == "y_items"] <- "etidronate"
+
+
+df_ibandronic_acid=read.csv('data/ibandronic_acid.csv')
+df_ibandronic_acid <- df_ibandronic_acid[, c(1,2,3,4)]
+names(df_ibandronic_acid)[names(df_ibandronic_acid) == "y_items"] <- "ibandronic_acid"
+
+
+
+df_clodronate=read.csv('data/clodronate.csv')
+df_clodronate <- df_clodronate[, c(1,2,3,4)]
+names(df_clodronate)[names(df_clodronate) == "y_items"] <- "clodronate"
+
+
+
+df_strontium=read.csv('data/strontium.csv')
+df_strontium <- df_strontium[, c(1,2,3,4)]
+names(df_strontium)[names(df_strontium) == "y_items"] <- "strontium"
+
+
+df_all_bisphosphates=inner_join(df_alendronic_acid,df_risedronate, by=c("date","name","id"))
+df_all_bisphosphates=inner_join(df_all_bisphosphates,df_etidronate, by=c("date","name","id"))
+df_all_bisphosphates=inner_join(df_all_bisphosphates,df_ibandronic_acid, by=c("date","name","id"))
+df_all_bisphosphates=inner_join(df_all_bisphosphates,df_clodronate, by=c("date","name","id"))
+df_all_bisphosphates=inner_join(df_all_bisphosphates,df_strontium, by=c("date","name","id"))
+df_all_bisphosphates$date=as.Date(df_all_bisphosphates$date)
+df_all_bisphosphates_by_geography<-df_all_bisphosphates %>% group_by(id) %>% summarise(
+  strontium = sum(strontium),
+  clodronate = sum(clodronate),
+  ibandronic_acid = sum(ibandronic_acid),
+  etidronate = sum(etidronate),
+  risedronate = sum(risedronate),
+  alendronic_acid = sum(alendronic_acid),
+)
+df_all_bisphosphates_by_geography
+write.csv(df_all_bisphosphates_by_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
+
+df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) %>% summarise(
+  strontium = sum(strontium),
+  clodronate = sum(clodronate),
+  ibandronic_acid = sum(ibandronic_acid),
+  etidronate = sum(etidronate),
+  risedronate = sum(risedronate),
+  alendronic_acid = sum(alendronic_acid),
+)
+
+df_all_bisphosphates_without_geography
+
+write.csv(df_all_bisphosphates_without_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
+df_all_bisphosphates_without_geography <- tidyr::gather(df_all_bisphosphates_without_geography, key = "drug", value = "count", -date)
+png(filename="outputs/bisphosphonates_types.png")
+ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "different amount of bisphosphonates",
+       x = "Date",
+       y = "Count",
+       color = "bisphosphate type") +
+  theme_minimal()
+dev.off()
+
+
+df_BIS=read.csv('data/BISPHOSPHATES_NHS_REGIONS.csv')
+df_BIS <- df_BIS[, c(1,2,3,4)]
+names(df_BIS)[names(df_BIS) == "y_items"] <- "BIS"
+
+df_CA=read.csv('data/CA+VIT_D_NHS REGIONS.csv')
+df_CA <- df_CA[, c(1,2,3,4)]
+names(df_CA)[names(df_CA) == "y_items"] <- "CA"
+
+df_PTH=read.csv("data/Calcitonins_PTH_NHS_REGIONS.csv")
+df_PTH <- df_PTH[, c(1,2,3,4)]
+names(df_PTH)[names(df_PTH) == "y_items"] <- "PTH"
+
+df_deno=read.csv("data/deno_NHS_REGIONS.csv")
+df_deno <- df_deno[, c(1,2,3,4)]
+names(df_deno)[names(df_deno) == "y_items"] <- "deno"
+
+df_drug=inner_join(df_BIS,df_CA, by=c("date","name","id"))
+df_drug=inner_join(df_drug,df_deno, by=c("date","name","id"))
+df_drug=inner_join(df_drug,df_PTH, by=c("date","name","id"))
+df_drug$date<-as.Date(df_drug$date)
+df_drug_by_geography<-df_drug %>% group_by(name) %>% summarise(
+  BIS = sum(BIS),
+  CA = sum(CA),
+  deno = sum(deno),
+  PTH = sum(PTH)
+)
+write.csv(df_drug_by_geography,"outputs/df_drug_by_geography.csv")
+
+df_drug_date<-df_drug %>% group_by(date) %>% summarise(
+  BIS = sum(BIS),
+  CA = sum(CA),
+  deno = sum(deno),
+  PTH = sum(PTH)
+)
+
+df_drug_date_deno<-df_drug_date[, c("date", "deno")]
+
+png("output/denosumab_trend")
+ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "different amount of drug presciption",
+       x = "Date",
+       y = "Count",
+       ) +
+  geom_smooth(method = "lm", se = FALSE, color = "red", size = 1) +
+  theme_minimal()
+dev.off()
+
+
+
+df_drug_date <- tidyr::gather(df_drug_date, key = "drug", value = "count", -date)
+png(filename = "outputs/df_all_bisphosphates_without_geography.png")
+ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "different amount of drug presciption",
+       x = "Date",
+       y = "Count",
+       color = "drug type") +
+  theme_minimal()
+dev.off()
+
+
+df_deno=read.csv("data/deno_NHS_REGIONS.csv")
+df_deno <- df_deno[, c(1,2,3,4)]
+names(df_deno)[names(df_deno) == "y_items"] <- "deno"
+
+df_deno<- df_deno %>% group_by(name) %>% summarise(sum=sum(deno))
+df_deno <- inner_join(df_deno, region_id, by = "name")
+df_deno<-inner_join(regions, df_deno,by="region_id")
+sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
+png(file="outputs/denosumab prescription.png")
+ggplot(sf_deno) +
+  geom_sf(aes(fill = sum), color = "white", lwd = 0.1) +
+  scale_fill_gradient(low = "orange", high = "red", name = "denosomab prescriptions") +
+  labs(title = "denosomab 5 years prescription") +
+  theme_minimal() +
+  theme(axis.text = element_blank(),   
+        axis.ticks = element_blank())
+dev.off()
+###yoooo i also did it 
+
