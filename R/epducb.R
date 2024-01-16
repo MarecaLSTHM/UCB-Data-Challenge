@@ -96,7 +96,7 @@ ggplot(merged_data) +
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank())
 
-png(filename = "outputs/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
+png(filename = "output/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
 ggplot(merged_data) +
   geom_sf(aes(fill = total_prescriptions), color = "white", lwd = 0.1) +
   scale_fill_gradient(low = "orange", high = "red", name = "Total Prescriptions") +
@@ -154,7 +154,7 @@ df_all_bisphosphates_by_geography<-df_all_bisphosphates %>% group_by(id) %>% sum
   alendronic_acid = sum(alendronic_acid),
 )
 df_all_bisphosphates_by_geography
-write.csv(df_all_bisphosphates_by_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
+write.csv(df_all_bisphosphates_by_geography,"output/df_all_bisphosphates_without_geographyy.csv")
 
 df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) %>% summarise(
   strontium = sum(strontium),
@@ -167,9 +167,9 @@ df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) 
 
 df_all_bisphosphates_without_geography
 
-write.csv(df_all_bisphosphates_without_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
+write.csv(df_all_bisphosphates_without_geography,"output/df_all_bisphosphates_without_geographyy.csv")
 df_all_bisphosphates_without_geography <- tidyr::gather(df_all_bisphosphates_without_geography, key = "drug", value = "count", -date)
-png(filename="outputs/bisphosphonates_types.png")
+png(filename="output/bisphosphonates_types.png")
 ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
   geom_line() +
   geom_point() +
@@ -207,7 +207,7 @@ df_drug_by_geography<-df_drug %>% group_by(name) %>% summarise(
   deno = sum(deno),
   PTH = sum(PTH)
 )
-write.csv(df_drug_by_geography,"outputs/df_drug_by_geography.csv")
+write.csv(df_drug_by_geography,"output/df_drug_by_geography.csv")
 
 df_drug_date<-df_drug %>% group_by(date) %>% summarise(
   BIS = sum(BIS),
@@ -218,7 +218,7 @@ df_drug_date<-df_drug %>% group_by(date) %>% summarise(
 
 df_drug_date_deno<-df_drug_date[, c("date", "deno")]
 
-png("output/denosumab_trend")
+png("output/denosumab_trend.png")
 ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
   geom_line() +
   geom_point() +
@@ -233,7 +233,7 @@ dev.off()
 
 
 df_drug_date <- tidyr::gather(df_drug_date, key = "drug", value = "count", -date)
-png(filename = "outputs/df_all_bisphosphates_without_geography.png")
+png(filename = "output/df_all_bisphosphates_without_geography.png")
 ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
   geom_line() +
   geom_point() +
@@ -253,7 +253,7 @@ df_deno<- df_deno %>% group_by(name) %>% summarise(sum=sum(deno))
 df_deno <- inner_join(df_deno, region_id, by = "name")
 df_deno<-inner_join(regions, df_deno,by="region_id")
 sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
-png(file="outputs/denosumab prescription.png")
+png(file="output/denosumab prescription.png")
 ggplot(sf_deno) +
   geom_sf(aes(fill = sum), color = "white", lwd = 0.1) +
   scale_fill_gradient(low = "orange", high = "red", name = "denosomab prescriptions") +
