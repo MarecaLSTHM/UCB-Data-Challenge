@@ -1,6 +1,8 @@
 library(tidyverse)
 library(lubridate)
+library(here)
 
+setwd(here())
 dat <- read.csv("data/By Region.csv")
 
 # Create data subsets by regions
@@ -48,5 +50,28 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, color = Reg
                                 "South West"= 22)) +
   scale_y_continuous(labels = scales::label_number_si())
 
+
 # Display the plot
 print(time_series_plot)
+
+
+
+png("output/bisphosphonates_regions_by_time.png")
+ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)) +
+  geom_line() +
+  geom_point() + 
+  labs(title = "Prescription of Bisphosphonates in regions of England in the last 5 years",
+       x = "Date",
+       y = "Prescriptions",
+       color = "Region",
+       shape = "Region") +
+  scale_shape_manual(values = c("Midlands" = 16, 
+                                "North East" = 17,
+                                "South East" = 18, 
+                                "North West" = 19,
+                                "London" = 20,
+                                "East of England" = 21,
+                                "South West"= 22)) +
+  scale_y_continuous(labels = scales::label_number_si())
+dev.off()
+
