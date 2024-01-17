@@ -96,7 +96,7 @@ ggplot(merged_data) +
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank())
 
-png(filename = "output/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
+png(filename = "outputs/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
 ggplot(merged_data) +
   geom_sf(aes(fill = total_prescriptions), color = "white", lwd = 0.1) +
   scale_fill_gradient(low = "orange", high = "red", name = "Total Prescriptions") +
@@ -154,7 +154,7 @@ df_all_bisphosphates_by_geography<-df_all_bisphosphates %>% group_by(id) %>% sum
   alendronic_acid = sum(alendronic_acid),
 )
 df_all_bisphosphates_by_geography
-write.csv(df_all_bisphosphates_by_geography,"output/df_all_bisphosphates_without_geographyy.csv")
+write.csv(df_all_bisphosphates_by_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
 
 df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) %>% summarise(
   strontium = sum(strontium),
@@ -167,9 +167,9 @@ df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) 
 
 df_all_bisphosphates_without_geography
 
-write.csv(df_all_bisphosphates_without_geography,"output/df_all_bisphosphates_without_geographyy.csv")
+write.csv(df_all_bisphosphates_without_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
 df_all_bisphosphates_without_geography <- tidyr::gather(df_all_bisphosphates_without_geography, key = "drug", value = "count", -date)
-png(filename="output/bisphosphonates_types.png")
+png(filename="outputs/bisphosphonates_types.png")
 ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
   geom_line() +
   geom_point() +
@@ -207,7 +207,7 @@ df_drug_by_geography<-df_drug %>% group_by(name) %>% summarise(
   deno = sum(deno),
   PTH = sum(PTH)
 )
-write.csv(df_drug_by_geography,"output/df_drug_by_geography.csv")
+write.csv(df_drug_by_geography,"outputs/df_drug_by_geography.csv")
 
 df_drug_date<-df_drug %>% group_by(date) %>% summarise(
   BIS = sum(BIS),
@@ -218,31 +218,60 @@ df_drug_date<-df_drug %>% group_by(date) %>% summarise(
 
 df_drug_date_deno<-df_drug_date[, c("date", "deno")]
 
-png("output/denosumab_trend.png")
+png("outputs/denosumab_trend.png")
 ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
   geom_line() +
   geom_point() +
   labs(title = "different amount of drug presciption",
        x = "Date",
        y = "Count",
-       ) +
+  ) +
   geom_smooth(method = "lm", se = FALSE, color = "red", size = 1) +
   theme_minimal()
 dev.off()
 
 
 
-df_drug_date <- tidyr::gather(df_drug_date, key = "drug", value = "count", -date)
-png(filename = "output/df_all_bisphosphates_without_geography.png")
-ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
-  geom_line() +
-  geom_point() +
-  labs(title = "different amount of drug presciption",
+png(filename = "output/df_drugs_with_time_without_geography.png")
+
+ggplot(df_drug_date, aes(x = date)) +
+  geom_line(aes(y = BIS, color = "bisphosphates")) +
+  geom_line(aes(y = CA, color = "Calcium and vitamin D")) +
+  geom_line(aes(y = deno, color = "Denosumab")) +
+  geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
+  labs(title = "Different Amounts of Drug Prescription",
        x = "Date",
-       y = "Count",
-       color = "drug type") +
+       y = "Count") +
+  scale_color_manual(values = c("bisphosphates" = "red", "Calcium and vitamin D" = "blue", "Denosumab" = "green", "Calcitonin and Parathyroid hormones" = "purple"),
+                     labels = c("bisphosphates", "Calcium and vitamin D", "Denosumab", "Calcitonin and Parathyroid hormones")) +
   theme_minimal()
+
+
+
+
 dev.off()
+
+df_selected<-select(df_drug_date, date, deno,PTH)
+
+png(filename = "output/df_little_drugs_with_time_without_geography.png")
+
+ggplot(df_drug_date, aes(x = date)) +
+  geom_line(aes(y = deno, color = "Denosumab")) +
+  geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
+  labs(title = "Different Amounts of Drug Prescription",
+       x = "Date",
+       y = "Count") +
+  scale_color_manual(values = c( "Denosumab" = "green", "Calcitonin and Parathyroid hormones" = "purple"),
+                     labels = c( "Denosumab", "Calcitonin and Parathyroid hormones")) +
+  theme_minimal()
+
+
+
+
+dev.off()
+
+
+
 
 
 df_deno=read.csv("data/deno_NHS_REGIONS.csv")
@@ -253,7 +282,7 @@ df_deno<- df_deno %>% group_by(name) %>% summarise(sum=sum(deno))
 df_deno <- inner_join(df_deno, region_id, by = "name")
 df_deno<-inner_join(regions, df_deno,by="region_id")
 sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
-png(file="output/denosumab prescription.png")
+png(file="outputs/denosumab prescription.png")
 ggplot(sf_deno) +
   geom_sf(aes(fill = sum), color = "white", lwd = 0.1) +
   scale_fill_gradient(low = "orange", high = "red", name = "denosomab prescriptions") +
