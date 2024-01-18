@@ -3,6 +3,9 @@ library(sf)
 library(here)
 library(dplyr)
 library(kableExtra)
+library(ggpubr)
+library(ggplot2)
+library(scales)
 here()
 setwd(here())
 
@@ -315,10 +318,6 @@ ggplot(sf_deno) +
 dev.off()
 ###yoooo i also did it 
 
-library(RColorBrewer)
-library(ggpubr)
-library(ggplot2)
-library(scales)
 
 # Regional Level 
 # Load Dataset
