@@ -48,7 +48,8 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, color = Reg
                                 "London" = 20,
                                 "East of England" = 21,
                                 "South West"= 22)) +
-  scale_y_continuous(labels = scales::label_number_si())
+  scale_y_continuous(labels = scales::label_number_si()) +
+  theme(plot.title = element_text(hjust = 0.5))  # Center the title
 
 
 # Display the plot
