@@ -68,17 +68,6 @@ ggplot(prescription_data_grouped, aes(y = Total_Prescriptions, x = factor(Year) 
         plot.background = element_rect(fill = "white"))  # Remove grid lines and set background to white
 
 
-# Horizontal bar graph
-ggplot(prescription_data_grouped, aes(x = Total_Prescriptions, y = factor(Year))) +
-  geom_bar(stat = "identity", fill = "maroon", height = 0.7) +
-  geom_text(aes(label = paste("(", Total_Prescriptions, ";", Year, ")", sep = "")), 
-            vjust = 0.5, hjust = -0.2, color = "black", size = 3) +
-  labs(title = paste("Osteoporosis medication prescription trends over", "the last 5 years in England", sep = "\n"),
-       x = "Prescriptions",
-       y = "Year") +
-  scale_x_continuous(labels = scales::label_number_si()) +
-  theme(plot.title = element_text(hjust = 0.5),
-        axis.text.y = element_text(hjust = 1))  # Adjust y-axis text position if needed
 
 
 
