@@ -53,16 +53,19 @@ ggplot(prescription_data_grouped, aes(x = Year, y = Total_Prescriptions, group =
 
 # We can have this as a bar graph
 ggplot(prescription_data_grouped, aes(y = Total_Prescriptions, x = factor(Year) )) +
-  geom_bar(stat = "identity", fill = "orange", width = 0.7) +  # Adjust fill color and width as needed
-  geom_text(aes(label = paste("(", Year, ";", Total_Prescriptions, ")", sep = "")), 
-            vjust = -0.5, hjust = 0.5, color = "red", size = 3) +  # Add text labels with adjustments
+  geom_bar(stat = "identity", fill = "red", width = 0.9) +  # Adjust fill color and width as needed
+  geom_text(aes(label = paste(Total_Prescriptions, sep = "")), 
+            vjust = -0.5, hjust = 0.5, color = "black", size = 3) +  # Add text labels with adjustments
   labs(title = paste("Osteoporosis medication prescription trends over", 
                      "the last 5 years in England", 
                      sep = "\n"),
        x = "Year",
        y = "Prescriptions") +
   scale_y_continuous(labels = scales::label_number_si()) +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        plot.background = element_rect(fill = "white"))  # Remove grid lines and set background to white
 
 
 # Horizontal bar graph
