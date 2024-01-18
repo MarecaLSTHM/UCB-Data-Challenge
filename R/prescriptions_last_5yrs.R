@@ -36,7 +36,8 @@ combined_data$Region <- factor(combined_data$Region,
 time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)) +
   geom_line() +
   geom_point() + 
-  labs(title = "Prescription of Bisphosphonates in regions of England in the last 5 years",
+  labs(title = paste("Prescription of Bisphosphonates in", 
+                     "regions of England in the last 5 years", sep = '\n'),
        x = "Date",
        y = "Prescriptions",
        color = "Region",
@@ -56,12 +57,12 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, color = Reg
 print(time_series_plot)
 
 
-
 png("output/bisphosphonates_regions_by_time.png")
 ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)) +
   geom_line() +
   geom_point() + 
-  labs(title = "Prescription of Bisphosphonates in regions of England in the last 5 years",
+  labs(title = paste("Prescription of Bisphosphonates in", 
+                     "regions of England in the last 5 years", sep = '\n'),
        x = "Date",
        y = "Prescriptions",
        color = "Region",
@@ -73,6 +74,8 @@ ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)
                                 "London" = 20,
                                 "East of England" = 21,
                                 "South West"= 22)) +
-  scale_y_continuous(labels = scales::label_number_si())
+  scale_y_continuous(labels = scales::label_number_si()) +
+  theme(plot.title = element_text(hjust = 0.5))  # Center the title
+
 dev.off()
 
