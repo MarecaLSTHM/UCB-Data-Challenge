@@ -29,6 +29,7 @@ png("output/population_at_risk.png")
 barplot(height = c(percentage_of_men,percentage_of_women),
         names.arg = c("Men", "Women"),
         col = c("blue", "pink"),
-        main = "Population at Risk of Osteoporosis",
-        ylab = "population at risk")
+        main = "estitmated Osteoporosis population in England (2022)",
+        ylab = "population at risk", 
+        ylim =(c(0, max(percentage_of_women)*1.3)))
 dev.off()
