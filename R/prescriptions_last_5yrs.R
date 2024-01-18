@@ -15,7 +15,6 @@ data_se <- subset(dat, name == "SOUTH EAST COMMISSIONING REGION")
 data_sw <- subset(dat, name == "SOUTH WEST COMMISSIONING REGION")
 
 
-# Extract year and months
 # Combine the datasets
 combined_data <- bind_rows(
   mutate(data_eoe, Region = "East of England"),
@@ -29,12 +28,17 @@ combined_data <- bind_rows(
 
 # Order the color categories by the highest to lowest value
 combined_data$Region <- factor(combined_data$Region, 
-                               levels = unique(combined_data$Region[order(combined_data$y_items, decreasing = TRUE)]))
+                               levels = unique(combined_data$Region[order(combined_data$y_items, 
+                                                                          decreasing = TRUE)]))
+# Convert 'date' to Date type
+combined_data$date <- as.Date(combined_data$date)
 
 
 # Create a time series plot using ggplot2
-time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)) +
+time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, 
+                                              color = Region, shape = Region)) +
   geom_line() +
+  # geom_path(aes(group=Region)) +
   geom_point() + 
   labs(title = paste("Prescription of Bisphosphonates in", 
                      "regions of England in the last 5 years", sep = '\n'),
@@ -50,15 +54,17 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items, color = Reg
                                 "East of England" = 21,
                                 "South West"= 22)) +
   scale_y_continuous(labels = scales::label_number_si()) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Set breaks and labels for years
   theme(plot.title = element_text(hjust = 0.5))  # Center the title
 
 
 # Display the plot
 print(time_series_plot)
 
-
+# Print the PNG output to the output folder
 png("output/bisphosphonates_regions_by_time.png")
-ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)) +
+ggplot(combined_data, aes(x = date, y = y_items, 
+                          color = Region, shape = Region)) +
   geom_line() +
   geom_point() + 
   labs(title = paste("Prescription of Bisphosphonates in", 
@@ -75,6 +81,7 @@ ggplot(combined_data, aes(x = date, y = y_items, color = Region, shape = Region)
                                 "East of England" = 21,
                                 "South West"= 22)) +
   scale_y_continuous(labels = scales::label_number_si()) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Set breaks and labels for years
   theme(plot.title = element_text(hjust = 0.5))  # Center the title
 
 dev.off()
