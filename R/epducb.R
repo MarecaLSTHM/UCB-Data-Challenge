@@ -256,17 +256,20 @@ ggplot(df_drug_date, aes(x = date)) +
   geom_line(aes(y = CA, color = "Calcium and vitamin D")) +
   geom_line(aes(y = deno, color = "Denosumab")) +
   geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
-  labs(title = "Different Amounts of Drug Prescription",
+  labs(title = paste("Prescriptions per drug",
+          "over the last 5 years", sep = "\n"),
        x = "Date",
-       y = "Count") +
-  scale_color_manual(values = c("bisphosphates" = "red", "Calcium and vitamin D" = "blue", "Denosumab" = "green", "Calcitonin and Parathyroid hormones" = "purple"),
-                     labels = c("bisphosphates", "Calcium and vitamin D", "Denosumab", "Calcitonin and Parathyroid hormones")) +
-  theme_minimal()
+       y = "Prescriptions") +
+  scale_color_manual(values = c("bisphosphates" = "red",
+                                "Calcium and vitamin D" = "blue", 
+                                "Denosumab" = "green", 
+                                "Calcitonin and Parathyroid hormones" = "purple"),
+                     labels = c("bisphosphates", 
+                                "Calcium and vitamin D", 
+                                "Denosumab", 
+                                "Calcitonin and Parathyroid hormones")) +
+  theme(plot.title = element_text(hjust = 0.5))
 
-
-
-
-dev.off()
 
 df_selected<-select(df_drug_date, date, deno,PTH)
 
@@ -284,8 +287,6 @@ ggplot(df_drug_date, aes(x = date)) +
                                  "Calcitonin and Parathyroid hormones")) +
   theme(plot.title = element_text(hjust = 0.5))  # Center the title
 
-
-dev.off()
 
 
 df_deno=read.csv("data/deno_NHS_REGIONS.csv")
