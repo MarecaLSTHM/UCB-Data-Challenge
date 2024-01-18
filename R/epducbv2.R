@@ -48,7 +48,10 @@ ggplot(prescription_data_grouped, aes(x = Year, y = Total_Prescriptions, group =
        x = "Year",
        y = "Prescriptions") +
   scale_y_continuous(labels = scales::label_number_si()) +
-  theme(plot.title = element_text(hjust = 0.5))  # Center the title and remove background
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.grid = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        plot.background = element_rect(fill = "white"))  # Center the title and remove background
 
 
 # We can have this as a bar graph
