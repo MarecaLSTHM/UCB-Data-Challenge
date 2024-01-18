@@ -20,7 +20,7 @@ tail(data11)
 
 #select needed columns
 data11 <- data11%>%
-  select(date, name,y_items, y_actual_cost)
+            select(date, name,y_items, y_actual_cost)
 #may calculate monthly cost per item and compare to income(later)
 
 #Date object
@@ -29,14 +29,16 @@ data11$date <- as.Date(data11$date, format = "%y%m%d")
 # Plotting the time series for the entire country(1st try, not much inference)
 ggplot(data11, aes(x = date, y = y_items, group = 1)) +
   geom_line() +
-  labs(title = "Prescription Trends Over Time",
-       x = "Date",
-       y = "Number of Prescriptions") +
+  labs(title = "Prescription trends over time",
+       x = "Year",
+       y = "Prescriptions") +
+  scale_y_continuous(labels = scales::label_number_si()) +
+  theme(plot.title = element_text(hjust = 0.5))  # Center the title
   theme_minimal()
-#note you did not use 1000s as a 
+
 ##2nd this is a bit sus at the very le
 
-#group total number of items per year
+#Group total number of items per year
 prescription_data_grouped <- data11 %>%
   group_by(Year = lubridate::year(date)) %>%
   summarize(Total_Prescriptions = sum(y_items))
@@ -89,21 +91,35 @@ merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_i
 #All medications can be computed as total and graphically represented
 # Plotting the map
 ggplot(merged_data) +
-  geom_sf(aes(fill = total_prescriptions), color = "white", lwd = 0.1) +
-  scale_fill_gradient(low = "orange", high = "red", name = "Total Prescriptions") +
-  labs(title = "Bisphosphonate 5 years prescription") +
-  theme_minimal() +
-  theme(axis.text = element_blank(),   
+  geom_sf(aes(fill = total_prescriptions), 
+          color = "white", 
+          lwd = 0.1) +
+  scale_fill_gradient(low = "orange", 
+                      high = "red", 
+                      name = "Total prescriptions") +
+  labs(title = paste("Bisphosphonates prescriptions", 
+                     "over last 5 years", 
+                     sep = "\n")) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        panel.grid = element_blank(), 
+        axis.text = element_blank(),   
         axis.ticks = element_blank())
 
 png(filename = "outputs/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
 ggplot(merged_data) +
-  geom_sf(aes(fill = total_prescriptions), color = "white", lwd = 0.1) +
-  scale_fill_gradient(low = "orange", high = "red", name = "Total Prescriptions") +
-  labs(title = "Bisphosphonate 5 years prescription") +
-  theme_minimal() +
-  theme(axis.text = element_blank(),   
-        axis.ticks = element_blank())
+  geom_sf(aes(fill = total_prescriptions), 
+          color = "white", 
+          lwd = 0.1) +
+  scale_fill_gradient(low = "orange", 
+                      high = "red", 
+                      name = "Total prescriptions") +
+  labs(title = paste("Bisphosphonates prescriptions", 
+                     "over last 5 years", 
+                     sep = "\n")) +
+  theme(plot.title = element_text(hjust = 0.5), 
+        panel.grid = element_blank(), 
+        axis.text = element_blank(),   
+        axis.ticks = element_blank()) 
 dev.off()
 
 #We can add labels on the regions too for proper identification
@@ -173,10 +189,11 @@ png(filename="outputs/bisphosphonates_types.png")
 ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
   geom_line() +
   geom_point() +
-  labs(title = "different amount of bisphosphonates",
+  labs(title = "Prescriptions for different bisphosphonates",
        x = "Date",
-       y = "Count",
-       color = "bisphosphate type") +
+       y = "Prescriptions",
+       color = "Bisphosphate type") +
+  scale_y_continuous(labels = scales::label_number_si()) +
   theme_minimal()
 dev.off()
 
@@ -258,20 +275,17 @@ png(filename = "output/df_little_drugs_with_time_without_geography.png")
 ggplot(df_drug_date, aes(x = date)) +
   geom_line(aes(y = deno, color = "Denosumab")) +
   geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
-  labs(title = "Different Amounts of Drug Prescription",
+  labs(title = "Different drug prescriptions",
        x = "Date",
-       y = "Count") +
-  scale_color_manual(values = c( "Denosumab" = "green", "Calcitonin and Parathyroid hormones" = "purple"),
-                     labels = c( "Denosumab", "Calcitonin and Parathyroid hormones")) +
-  theme_minimal()
-
-
+       y = "Prescriptions") +
+  scale_color_manual(values = c( "Denosumab" = "green", 
+                                 "Calcitonin and Parathyroid hormones" = "purple"),
+                     labels = c( "Denosumab", 
+                                 "Calcitonin and Parathyroid hormones")) +
+  theme(plot.title = element_text(hjust = 0.5))  # Center the title
 
 
 dev.off()
-
-
-
 
 
 df_deno=read.csv("data/deno_NHS_REGIONS.csv")
@@ -284,12 +298,19 @@ df_deno<-inner_join(regions, df_deno,by="region_id")
 sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
 png(file="outputs/denosumab prescription.png")
 ggplot(sf_deno) +
-  geom_sf(aes(fill = sum), color = "white", lwd = 0.1) +
-  scale_fill_gradient(low = "orange", high = "red", name = "denosomab prescriptions") +
-  labs(title = "denosomab 5 years prescription") +
-  theme_minimal() +
+  geom_sf(aes(fill = sum), 
+          color = "white", 
+          lwd = 0.1) +
+  scale_fill_gradient(low = "orange", 
+                      high = "red", 
+                      name = "Denosomab prescriptions") +
+  labs(title = paste("Denosomab prescriptions", 
+                     "over last 5 years",
+                     sep = "\n")) +
   theme(axis.text = element_blank(),   
-        axis.ticks = element_blank())
+        axis.ticks = element_blank(), 
+        panel.grid = element_blank(),
+        plot.title = element_text(hjust = 0.5))
 dev.off()
 ###yoooo i also did it 
 
