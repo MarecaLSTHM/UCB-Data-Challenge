@@ -25,6 +25,8 @@ cat("6.7% of total men aged 50 and above:", percentage_of_men, "\n")
 total_osteoporosis_population <- percentage_of_women + percentage_of_men
 print(total_osteoporosis_population)
 
+# comment test
+
 png("output/population_at_risk.png")
 barplot(height = c(percentage_of_men,percentage_of_women),
         names.arg = c("Men", "Women"),
