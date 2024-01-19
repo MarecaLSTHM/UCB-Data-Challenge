@@ -34,7 +34,7 @@ df_over_50<-as.data.frame(df_over_50)
 
 colnames(df_over_50) <- df_over_50[1,]
 df_over_50 <- df_over_50[-1, ]
-
+df_over_50_2<-df_over_50
 
 df_over_50$Gender <- rownames(df_over_50)
 
@@ -47,6 +47,21 @@ ggplot(df_long, aes(x = Year, y = Value, fill = Gender)) +
        y = "Population(thousands",
        fill = "Gender") +
   scale_fill_manual(values = c("Pink", "Blue"), name = "Gender") + 
-  theme_minimal()
+  theme_minimal()+
+  scale_y_continuous(breaks = seq(0,4000, by = 400)) 
+
 dev.off()
+
+
+total_sum<-colSums(df_over_50_2)
+percentage_increase <- (total_sum[-1] - total_sum[-length(total_sum)]) / total_sum[-length(total_sum)] * 100
+
+result_df <- data.frame(
+  Year = names(percentage_increase),
+  Percentage_Increase = percentage_increase
+)
+
+
+
+
 
