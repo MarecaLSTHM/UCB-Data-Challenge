@@ -7,7 +7,7 @@ library(ggpubr)
 library(ggplot2)
 library(scales)
 here()
-setwd(here())
+setwd(here)
 
 
 
@@ -108,7 +108,7 @@ ggplot(merged_data) +
         axis.text = element_blank(),   
         axis.ticks = element_blank())
 
-png(filename = "outputs/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
+png(filename = "output/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
 ggplot(merged_data) +
   geom_sf(aes(fill = total_prescriptions), 
           color = "white", 
@@ -173,7 +173,7 @@ df_all_bisphosphates_by_geography<-df_all_bisphosphates %>% group_by(id) %>% sum
   alendronic_acid = sum(alendronic_acid),
 )
 df_all_bisphosphates_by_geography
-write.csv(df_all_bisphosphates_by_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
+write.csv(df_all_bisphosphates_by_geography,"output/df_all_bisphosphates_without_geographyy.csv")
 
 df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) %>% summarise(
   strontium = sum(strontium),
@@ -186,9 +186,9 @@ df_all_bisphosphates_without_geography<-df_all_bisphosphates %>% group_by(date) 
 
 df_all_bisphosphates_without_geography
 
-write.csv(df_all_bisphosphates_without_geography,"outputs/df_all_bisphosphates_without_geographyy.csv")
+write.csv(df_all_bisphosphates_without_geography,"output/df_all_bisphosphates_without_geographyy.csv")
 df_all_bisphosphates_without_geography <- tidyr::gather(df_all_bisphosphates_without_geography, key = "drug", value = "count", -date)
-png(filename="outputs/bisphosphonates_types.png")
+png(filename="output/bisphosphonates_types.png")
 ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
   geom_line() +
   geom_point() +
@@ -227,7 +227,7 @@ df_drug_by_geography<-df_drug %>% group_by(name) %>% summarise(
   deno = sum(deno),
   PTH = sum(PTH)
 )
-write.csv(df_drug_by_geography,"outputs/df_drug_by_geography.csv")
+write.csv(df_drug_by_geography,"output/df_drug_by_geography.csv")
 
 df_drug_date<-df_drug %>% group_by(date) %>% summarise(
   BIS = sum(BIS),
@@ -238,7 +238,7 @@ df_drug_date<-df_drug %>% group_by(date) %>% summarise(
 
 df_drug_date_deno<-df_drug_date[, c("date", "deno")]
 
-png("outputs/denosumab_trend.png")
+png("output/denosumab_trend.png")
 ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
   geom_line() +
   geom_point() +
@@ -272,7 +272,7 @@ ggplot(df_drug_date, aes(x = date)) +
                                 "Denosumab", 
                                 "Calcitonin and Parathyroid hormones")) +
   theme(plot.title = element_text(hjust = 0.5))
-
+dev.off()
 
 df_selected<-select(df_drug_date, date, deno,PTH)
 
@@ -286,11 +286,11 @@ ggplot(df_drug_date, aes(x = date)) +
        y = "Prescriptions") +
   scale_color_manual(values = c( "Denosumab" = "green", 
                                  "Calcitonin and Parathyroid hormones" = "purple"),
-                     labels = c( "Denosumab", 
-                                 "Calcitonin and Parathyroid hormones")) +
+                     labels = c( "Calcitonin and Parathyroid hormones",
+                                 "Denosumab")) +
   theme(plot.title = element_text(hjust = 0.5))  # Center the title
 
-
+dev.off()
 
 df_deno=read.csv("data/deno_NHS_REGIONS.csv")
 df_deno <- df_deno[, c(1,2,3,4)]
@@ -300,7 +300,7 @@ df_deno<- df_deno %>% group_by(name) %>% summarise(sum=sum(deno))
 df_deno <- inner_join(df_deno, region_id, by = "name")
 df_deno<-inner_join(regions, df_deno,by="region_id")
 sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
-png(file="outputs/denosumab prescription.png")
+png(file="output/denosumab prescription.png")
 ggplot(sf_deno) +
   geom_sf(aes(fill = sum), 
           color = "white", 
@@ -417,3 +417,6 @@ ggarrange(plot_region_cases_F, plot_region_cases_M,
 
 dev.off() # Set grid back to normal
 
+
+
+#did someone delet my dev.off()s? if you did this i will find you and kill you. 
