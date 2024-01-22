@@ -327,134 +327,6 @@ region_pop <- read.csv('data/Regional_pop.csv')
 case_east_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East' & region_pop$Age >= 50])
 case_east_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'East' & region_pop$Age >= 50])
 total_case_east <- case_east_F + case_east_M 
-
-## 2. London 
-case_london_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'London' & region_pop$Age >= 50])
-case_london_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'London' & region_pop$Age >= 50]) 
-total_case_london <- case_london_F + case_london_M 
-
-## 3. Midlands (East AND West Midlands)
-case_midlands_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East Midlands' & region_pop$Age >= 50]) + 
-  0.219 * sum(region_pop$Females[region_pop$Region == 'West Midlands' & region_pop$Age >= 50])
-case_midlands_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'East Midlands' & region_pop$Age >= 50]) + 
-  0.067 * sum(region_pop$Males[region_pop$Region == 'West Midlands' & region_pop$Age >= 50])
-total_case_midlands <- case_midlands_F + case_midlands_M
-
-## 4. North East AND Yorkshire
-case_northeast_yorkshire_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'Yorkshire & the Humber' & region_pop$Age >= 50]) + 
-  0.219 * sum(region_pop$Females[region_pop$Region == 'Northeast' & region_pop$Age >= 50])
-case_northeast_yorkshire_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'Yorkshire & the Humber' & region_pop$Age >= 50]) + 
-  0.067 * sum(region_pop$Males[region_pop$Region == 'Northeast' & region_pop$Age >= 50])
-total_case_northeast_yorkshire <- case_northeast_yorkshire_F + case_northeast_yorkshire_M
-
-## 5. North West
-case_northwest_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'North West' & region_pop$Age >= 50]) 
-case_northwest_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'North West' & region_pop$Age >= 50]) 
-total_case_northwest <- case_northwest_F + case_northwest_M 
-
-## 6. South East 
-case_southeast_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'South East' & region_pop$Age >= 50]) 
-case_southeast_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'South East' & region_pop$Age >= 50]) 
-total_case_southeast <- case_southeast_F + case_southeast_M 
-
-
-## 7. South West 
-case_southwest_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'South West' & region_pop$Age >= 50]) 
-case_southwest_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'South West' & region_pop$Age >= 50]) 
-total_case_southwest <- case_southwest_F + case_southwest_M 
-
-# Create a data frame directly
-region_case <- data.frame(
-  Region = c("East of England", "London", "Midlands", "North East and Yorkshire", "North West", "South East", "South West"),
-  case_Females = c(case_east_F, case_london_F, case_midlands_F, case_northeast_yorkshire_F, case_northwest_F, case_southeast_F, case_southwest_F),
-  case_Males = c(case_east_M, case_london_M, case_midlands_M, case_northeast_yorkshire_M, case_northwest_M, case_southeast_M, case_southwest_M),
-  Total_case = c(total_case_east, total_case_london, total_case_midlands, total_case_northeast_yorkshire, total_case_northwest, total_case_southeast, total_case_southwest)
-)
-
-# Display the data frame
-print(region_case)
-
-# Merge ONS shapefile and regional number of cases
-region_case_merged <- cbind(regions, region_case, by.x = 'NHSER21NM', by.y = 'Region')
-
-# Set limits for the color scale
-scale_limits <- c(60000, 550000)
-
-# Define breaks for the color scale
-scale_breaks <- seq(from = scale_limits[1], to = scale_limits[2], length.out = 5)
-
-# Plot number of cases for each region (Female)
-plot_region_cases_F <- ggplot(region_case_merged) +
-  geom_sf(aes(fill = case_Females), 
-          color = 'white',
-          lwd = 0.1) + 
-  scale_fill_viridis_c(name = 'Number of Cases', limits = scale_limits, breaks = scale_breaks, labels = scales::label_comma()) +
-  ggtitle('Number of Cases by Region') +
-  labs(subtitle = 'Female') +
-  theme(panel.grid = element_blank(), 
-        axis.text = element_blank(), 
-        axis.ticks = element_blank(),
-        plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
-
-# Plot number of cases for each region (Male)
-plot_region_cases_M <- ggplot(region_case_merged) +
-  geom_sf(aes(fill = case_Males), 
-          color = 'white',
-          lwd = 0.1) + 
-  scale_fill_viridis_c(name = 'Number of Cases', limits = scale_limits, breaks = scale_breaks, labels = scales::label_comma()) +
-  labs(subtitle = '\n\nMale') +
-  theme(panel.grid = element_blank(), 
-        axis.text = element_blank(), 
-        axis.ticks = element_blank(),
-        plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
-
-# Plot the two maps with a shared legend
-ggarrange(plot_region_cases_F, plot_region_cases_M, 
-          ncol = 2, nrow = 1, 
-          common.legend = TRUE, legend = "right")
-
-dev.off() # Set grid back to normal
-
-# Proportion of Estimated Prevalence Population (Female)
-F_prop_mid <-  region_case$case_Females[region_case$Region == 'Midlands']/(sum(region_case$case_Females))*100
-F_prop_EastofEngland <- region_case$case_Females[region_case$Region == 'East of England']/(sum(region_case$case_Females))*100
-F_prop_London <- region_case$case_Females[region_case$Region == 'London']/(sum(region_case$case_Females))*100
-F_prop_NE_Y <- region_case$case_Females[region_case$Region == 'North East and Yorkshire']/(sum(region_case$case_Females))*100
-F_prop_NorthWest<- region_case$case_Females[region_case$Region == 'North West']/(sum(region_case$case_Females))*100
-F_prop_SouthWest <- region_case$case_Females[region_case$Region == 'South West']/(sum(region_case$case_Females))*100
-F_prop_SouthEast <- region_case$case_Females[region_case$Region == 'South East']/(sum(region_case$case_Females))*100
-
-
-M_prop_mid <-  region_case$case_Males[region_case$Region == 'Midlands']/(sum(region_case$case_Males))*100
-M_prop_EastofEngland <- region_case$case_Males[region_case$Region == 'East of England']/(sum(region_case$case_Males))*100
-M_prop_London <- region_case$case_Males[region_case$Region == 'London']/(sum(region_case$case_Males))*100
-M_prop_NE_Y <- region_case$case_Males[region_case$Region == 'North East and Yorkshire']/(sum(region_case$case_Males))*100
-M_prop_NorthWest<- region_case$case_Males[region_case$Region == 'North West']/(sum(region_case$case_Males))*100
-M_prop_SouthWest <- region_case$case_Males[region_case$Region == 'South West']/(sum(region_case$case_Males))*100
-M_prop_SouthEast <- region_case$case_Males[region_case$Region == 'South East']/(sum(region_case$case_Males))*100
-
-# Create a data frame for the proportion
-region_case <- data.frame(
-  Region = c("East of England", "London", "Midlands", "North East and Yorkshire", "North West", "South East", "South West"),
-  case_Females = c(case_east_F, case_london_F, case_midlands_F, case_northeast_yorkshire_F, case_northwest_F, case_southeast_F, case_southwest_F),
-  case_Males = c(case_east_M, case_london_M, case_midlands_M, case_northeast_yorkshire_M, case_northwest_M, case_southeast_M, case_southwest_M),
-  Total_case = c(total_case_east, total_case_london, total_case_midlands, total_case_northeast_yorkshire, total_case_northwest, total_case_southeast, total_case_southwest),
-  proportion_of_50_F = c(F_prop_EastofEngland, F_prop_London, F_prop_mid, F_prop_NE_Y, F_prop_NorthWest, F_prop_SouthEast, F_prop_SouthWest), 
-  proportion_of_50_M = c(M_prop_EastofEngland, M_prop_London, M_prop_mid, M_prop_NE_Y, M_prop_NorthWest, M_prop_SouthEast, M_prop_SouthWest)
-)
-
-# In Per Capita
-
-# Regional Level 
-# Load Dataset
-region_pop <- read.csv('data/Regional_pop.csv')
-
-## 1. East
-case_east_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East' & region_pop$Age >= 50])
-case_east_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'East' & region_pop$Age >= 50])
-total_case_east <- case_east_F + case_east_M 
 total_pop_east_F <- sum(region_pop$Females[region_pop$Region == 'East'])
 total_pop_east_M <- sum(region_pop$Males[region_pop$Region == 'East'])  
 total_pop_east <- total_pop_east_F + total_pop_east_M
@@ -536,4 +408,108 @@ region_case <- data.frame(
 )
 
 
-#did someone delet my dev.off()s? if you did this i will find you and kill you. 
+# Display the data frame
+print(region_case)
+
+# Merge ONS shapefile and regional number of cases
+region_case_merged <- cbind(regions, region_case, by.x = 'NHSER21NM', by.y = 'Region')
+
+# Set limits for the color scale
+scale_limits <- c(60000, 550000)
+
+# Define breaks for the color scale
+scale_breaks <- seq(from = scale_limits[1], to = scale_limits[2], length.out = 5)
+
+# Plot number of cases for each region (Female)
+plot_region_cases_F <- ggplot(region_case_merged) +
+  geom_sf(aes(fill = case_Females), 
+          color = 'white',
+          lwd = 0.1) + 
+  scale_fill_viridis_c(name = 'Number of Cases', limits = scale_limits, breaks = scale_breaks, labels = scales::label_comma()) +
+  ggtitle('Number of Cases by Region') +
+  labs(subtitle = 'Female') +
+  theme(panel.grid = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA))
+
+# Plot number of cases for each region (Male)
+plot_region_cases_M <- ggplot(region_case_merged) +
+  geom_sf(aes(fill = case_Males), 
+          color = 'white',
+          lwd = 0.1) + 
+  scale_fill_viridis_c(name = 'Number of Cases', limits = scale_limits, breaks = scale_breaks, labels = scales::label_comma()) +
+  labs(subtitle = '\n\nMale') +
+  theme(panel.grid = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA))
+
+# Plot the two maps with a shared legend
+ggarrange(plot_region_cases_F, plot_region_cases_M, 
+          ncol = 2, nrow = 1, 
+          common.legend = TRUE, legend = "right")
+
+dev.off() # Set grid back to normal
+
+# Proportion of Estimated Prevalence Population (Female)
+F_prop_mid <-  region_case$case_Females[region_case$Region == 'Midlands']/(sum(region_case$case_Females))*100
+F_prop_EastofEngland <- region_case$case_Females[region_case$Region == 'East of England']/(sum(region_case$case_Females))*100
+F_prop_London <- region_case$case_Females[region_case$Region == 'London']/(sum(region_case$case_Females))*100
+F_prop_NE_Y <- region_case$case_Females[region_case$Region == 'North East and Yorkshire']/(sum(region_case$case_Females))*100
+F_prop_NorthWest<- region_case$case_Females[region_case$Region == 'North West']/(sum(region_case$case_Females))*100
+F_prop_SouthWest <- region_case$case_Females[region_case$Region == 'South West']/(sum(region_case$case_Females))*100
+F_prop_SouthEast <- region_case$case_Females[region_case$Region == 'South East']/(sum(region_case$case_Females))*100
+
+# Proportion of Estimated Prevalence Population (Male)
+M_prop_mid <-  region_case$case_Males[region_case$Region == 'Midlands']/(sum(region_case$case_Males))*100
+M_prop_EastofEngland <- region_case$case_Males[region_case$Region == 'East of England']/(sum(region_case$case_Males))*100
+M_prop_London <- region_case$case_Males[region_case$Region == 'London']/(sum(region_case$case_Males))*100
+M_prop_NE_Y <- region_case$case_Males[region_case$Region == 'North East and Yorkshire']/(sum(region_case$case_Males))*100
+M_prop_NorthWest<- region_case$case_Males[region_case$Region == 'North West']/(sum(region_case$case_Males))*100
+M_prop_SouthWest <- region_case$case_Males[region_case$Region == 'South West']/(sum(region_case$case_Males))*100
+M_prop_SouthEast <- region_case$case_Males[region_case$Region == 'South East']/(sum(region_case$case_Males))*100
+
+# Create a data frame for the proportion
+region_case <- data.frame(
+  Region = c("East of England", "London", "Midlands", "North East and Yorkshire", "North West", "South East", "South West"),
+  case_Females = c(case_east_F, case_london_F, case_midlands_F, case_northeast_yorkshire_F, case_northwest_F, case_southeast_F, case_southwest_F),
+  case_Males = c(case_east_M, case_london_M, case_midlands_M, case_northeast_yorkshire_M, case_northwest_M, case_southeast_M, case_southwest_M),
+  Total_case = c(total_case_east, total_case_london, total_case_midlands, total_case_northeast_yorkshire, total_case_northwest, total_case_southeast, total_case_southwest),
+  proportion_of_50_F = c(F_prop_EastofEngland, F_prop_London, F_prop_mid, F_prop_NE_Y, F_prop_NorthWest, F_prop_SouthEast, F_prop_SouthWest), 
+  proportion_of_50_M = c(M_prop_EastofEngland, M_prop_London, M_prop_mid, M_prop_NE_Y, M_prop_NorthWest, M_prop_SouthEast, M_prop_SouthWest)
+)
+
+# Plot per capita number of cases for each region (Female)
+plot_pc_region_cases_F <- ggplot(region_case_merged) +
+  geom_sf(aes(fill = per_capita_F), 
+          color = 'white',
+          lwd = 0.1) + 
+  scale_colour_brewer('Reds') +
+  ggtitle('Number of Cases by Region') +
+  labs(subtitle = 'Female') +
+  theme(panel.grid = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA))
+
+# Plot per capita number of cases for each region (Male)
+plot_pc_region_cases_M <- ggplot(region_case_merged) +
+  geom_sf(aes(fill = per_capita_M), 
+          color = 'white',
+          lwd = 0.1) + 
+  scale_colour_brewer('Reds') +
+  labs(subtitle = '\n\nMale') +
+  theme(panel.grid = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA))
+
+# Plot the two maps with a shared legend
+ggarrange(plot_pc_region_cases_F, plot_pc_region_cases_M, 
+          ncol = 2, nrow = 1, 
+          common.legend = TRUE, legend = "right")
