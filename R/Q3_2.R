@@ -94,3 +94,7 @@ plot(forecast_values, main = "Bisphosphonates Forecast", ylab="total prescriptio
 
 dev.off()
 
+
+residuals <- residuals(best_model)
+box_ljung_test <- Box.test(residuals,  type = "Ljung-Box")
+box_ljung_test$p.value
