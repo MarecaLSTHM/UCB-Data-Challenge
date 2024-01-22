@@ -488,7 +488,7 @@ plot_pc_region_cases_F <- ggplot(region_case_merged) +
   geom_sf(aes(fill = per_capita_F), 
           color = 'white',
           lwd = 0.1) + 
-  scale_fill_continuous('Reds') +
+  # scale_colour_brewer('Reds') +
   ggtitle('Number of Cases by Region') +
   labs(subtitle = 'Female') +
   theme(panel.grid = element_blank(), 
@@ -502,7 +502,7 @@ plot_pc_region_cases_M <- ggplot(region_case_merged) +
   geom_sf(aes(fill = per_capita_M), 
           color = 'white',
           lwd = 0.1) + 
-  scale_fill_continuous('Reds') +
+  # scale_colour_brewer('Reds') +
   labs(subtitle = '\n\nMale') +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(), 
