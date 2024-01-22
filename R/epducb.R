@@ -434,6 +434,7 @@ plot_region_cases_F <- ggplot(region_case_merged) +
         plot.background = element_rect(fill = "white", color = NA),
         panel.background = element_rect(fill = "white", color = NA))
 
+library(RColorBrewer)
 # Plot number of cases for each region (Male)
 plot_region_cases_M <- ggplot(region_case_merged) +
   geom_sf(aes(fill = case_Males), 
@@ -487,7 +488,7 @@ plot_pc_region_cases_F <- ggplot(region_case_merged) +
   geom_sf(aes(fill = per_capita_F), 
           color = 'white',
           lwd = 0.1) + 
-  scale_colour_brewer('Reds') +
+  scale_fill_continuous('Reds') +
   ggtitle('Number of Cases by Region') +
   labs(subtitle = 'Female') +
   theme(panel.grid = element_blank(), 
@@ -501,7 +502,7 @@ plot_pc_region_cases_M <- ggplot(region_case_merged) +
   geom_sf(aes(fill = per_capita_M), 
           color = 'white',
           lwd = 0.1) + 
-  scale_colour_brewer('Reds') +
+  scale_fill_continuous('Reds') +
   labs(subtitle = '\n\nMale') +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(), 
