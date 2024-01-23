@@ -455,6 +455,42 @@ ggarrange(plot_region_cases_F, plot_region_cases_M,
 
 dev.off() # Set grid back to normal
 
+# Set limits for the color scale
+scale_limits <- c(0, 0.15)
+
+library(RColorBrewer)
+# Plot per capita number of cases for each region (Female)
+plot_pc_region_cases_F <- ggplot(region_case_merged) +
+  geom_sf(aes(fill = per_capita_F), 
+          color = 'white',
+          lwd = 0.1) + 
+  scale_fill_viridis_c(name = 'Number of Cases per capita', limits = scale_limits, labels = scales::label_comma(), option = 'rocket') +
+  ggtitle('Number of Cases by Region') +
+  labs(subtitle = 'Female') +
+  theme(panel.grid = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA))
+
+# Plot per capita number of cases for each region (Male)
+plot_pc_region_cases_M <- ggplot(region_case_merged) +
+  geom_sf(aes(fill = per_capita_M), 
+          color = 'white',
+          lwd = 0.1) + 
+  scale_fill_viridis_c(name = 'Number of Cases per capita', limits = scale_limits, labels = scales::label_comma(), option = 'rocket') +
+  labs(subtitle = '\n\nMale') +
+  theme(panel.grid = element_blank(), 
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(),
+        plot.background = element_rect(fill = "white", color = NA),
+        panel.background = element_rect(fill = "white", color = NA))
+
+# Plot the two maps with a shared legend
+ggarrange(plot_pc_region_cases_F, plot_pc_region_cases_M, 
+          ncol = 2, nrow = 1, 
+          common.legend = TRUE, legend = "right")
+
 # Proportion of Estimated Prevalence Population (Female)
 F_prop_mid <-  region_case$case_Females[region_case$Region == 'Midlands']/(sum(region_case$case_Females))*100
 F_prop_EastofEngland <- region_case$case_Females[region_case$Region == 'East of England']/(sum(region_case$case_Females))*100
@@ -483,34 +519,3 @@ region_case <- data.frame(
   proportion_of_50_M = c(M_prop_EastofEngland, M_prop_London, M_prop_mid, M_prop_NE_Y, M_prop_NorthWest, M_prop_SouthEast, M_prop_SouthWest)
 )
 
-# Plot per capita number of cases for each region (Female)
-plot_pc_region_cases_F <- ggplot(region_case_merged) +
-  geom_sf(aes(fill = per_capita_F), 
-          color = 'white',
-          lwd = 0.1) + 
-  # scale_colour_brewer('Reds') +
-  ggtitle('Number of Cases by Region') +
-  labs(subtitle = 'Female') +
-  theme(panel.grid = element_blank(), 
-        axis.text = element_blank(), 
-        axis.ticks = element_blank(),
-        plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
-
-# Plot per capita number of cases for each region (Male)
-plot_pc_region_cases_M <- ggplot(region_case_merged) +
-  geom_sf(aes(fill = per_capita_M), 
-          color = 'white',
-          lwd = 0.1) + 
-  # scale_colour_brewer('Reds') +
-  labs(subtitle = '\n\nMale') +
-  theme(panel.grid = element_blank(), 
-        axis.text = element_blank(), 
-        axis.ticks = element_blank(),
-        plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
-
-# Plot the two maps with a shared legend
-ggarrange(plot_pc_region_cases_F, plot_pc_region_cases_M, 
-          ncol = 2, nrow = 1, 
-          common.legend = TRUE, legend = "right")
