@@ -330,8 +330,8 @@ total_case_east <- case_east_F + case_east_M
 total_pop_east_F <- sum(region_pop$Females[region_pop$Region == 'East'])
 total_pop_east_M <- sum(region_pop$Males[region_pop$Region == 'East'])  
 total_pop_east <- total_pop_east_F + total_pop_east_M
-east_F_pc <- round(total_pop_east_F/total_pop_east*100, 2)
-east_M_pc <- round(total_pop_east_M/total_pop_east*100, 2)
+east_F_pc <- round(case_east_F/total_pop_east_F, 2)
+east_M_pc <- round(case_east_M/total_pop_east_M, 2)
 
 ## 2. London 
 case_london_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'London' & region_pop$Age >= 50])
@@ -340,8 +340,8 @@ total_case_london <- case_london_F + case_london_M
 total_pop_london_F <- sum(region_pop$Females[region_pop$Region == 'London'])
 total_pop_london_M <- sum(region_pop$Males[region_pop$Region == 'London'])  
 total_pop_london <- total_pop_london_F + total_pop_london_M
-london_F_pc <- round(total_pop_london_F/total_pop_london*100, 2)
-london_M_pc <- round(total_pop_london_M/total_pop_london*100, 2)
+london_F_pc <- round(case_london_F/total_pop_london_F, 2)
+london_M_pc <- round(case_london_M/total_pop_london_M, 2)
 
 ## 3. Midlands (East AND West Midlands)
 case_midlands_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East Midlands' & region_pop$Age >= 50]) + 
@@ -352,8 +352,8 @@ total_case_midlands <- case_midlands_F + case_midlands_M
 total_pop_mid_F <- sum(region_pop$Females[region_pop$Region == 'East Midlands']) + sum(region_pop$Females[region_pop$Region == 'West Midlands'])
 total_pop_mid_M <- sum(region_pop$Males[region_pop$Region == 'East Midlands'])  + sum(region_pop$Males[region_pop$Region == 'West Midlands'])
 total_pop_mid <- total_pop_mid_F + total_pop_mid_M
-mid_F_pc <- round(total_pop_mid_F/total_pop_mid*100, 2)
-mid_M_pc <- round(total_pop_mid_M/total_pop_mid*100, 2)
+mid_F_pc <- round(case_midlands_F/total_pop_mid_F, 2)
+mid_M_pc <- round(case_midlands_M/total_pop_mid_M, 2)
 
 ## 4. North East AND Yorkshire
 case_northeast_yorkshire_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'Yorkshire & the Humber' & region_pop$Age >= 50]) + 
@@ -364,8 +364,8 @@ total_case_northeast_yorkshire <- case_northeast_yorkshire_F + case_northeast_yo
 total_pop_northeast_yorkshire_F <- sum(region_pop$Females[region_pop$Region == 'Yorkshire & the Humber']) + sum(region_pop$Females[region_pop$Region == 'Northeast'])
 total_pop_northeast_yorkshire_M <- sum(region_pop$Males[region_pop$Region == 'Yorkshire & the Humber']) + sum(region_pop$Males[region_pop$Region == 'Northeast'])
 total_pop_northeast_yorkshire <- total_pop_northeast_yorkshire_F + total_pop_northeast_yorkshire_M
-ny_F_pc <- round(total_pop_northeast_yorkshire_F/total_pop_northeast_yorkshire*100, 2)
-ny_M_pc <- round(total_pop_northeast_yorkshire_M/total_pop_northeast_yorkshire*100, 2)
+ny_F_pc <- round(case_northeast_yorkshire_F/total_pop_northeast_yorkshire_F, 2)
+ny_M_pc <- round(case_northeast_yorkshire_M/total_pop_northeast_yorkshire_M, 2)
 
 ## 5. North West
 case_northwest_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'North West' & region_pop$Age >= 50]) 
@@ -374,8 +374,8 @@ total_case_northwest <- case_northwest_F + case_northwest_M
 total_pop_northwest_F <- sum(region_pop$Females[region_pop$Region == 'North West'])
 total_pop_northwest_M <- sum(region_pop$Males[region_pop$Region == 'North West'])  
 total_pop_northwest <- total_pop_northwest_F + total_pop_northwest_M
-nw_F_pc <- round(total_pop_northwest_F/total_pop_northwest*100, 2)
-nw_M_pc <- round(total_pop_northwest_M/total_pop_northwest*100, 2)
+nw_F_pc <- round(case_northwest_F/total_pop_northwest_F, 2)
+nw_M_pc <- round(case_northwest_M/total_pop_northwest_M, 2)
 
 ## 6. South East 
 case_southeast_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'South East' & region_pop$Age >= 50]) 
@@ -384,8 +384,8 @@ total_case_southeast <- case_southeast_F + case_southeast_M
 total_pop_southeast_F <- sum(region_pop$Females[region_pop$Region == 'South East'])
 total_pop_southeast_M <- sum(region_pop$Males[region_pop$Region == 'South East'])  
 total_pop_southeast <- total_pop_southeast_F + total_pop_southeast_M
-se_F_pc <- round(total_pop_southeast_F/total_pop_southeast*100, 2)
-se_M_pc <- round(total_pop_southeast_M/total_pop_southeast*100, 2)
+se_F_pc <- round(case_southeast_F/total_pop_southeast_F, 2)
+se_M_pc <- round(case_southeast_M/total_pop_southeast_M, 2)
 
 ## 7. South West 
 case_southwest_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'South West' & region_pop$Age >= 50]) 
@@ -394,8 +394,8 @@ total_case_southwest <- case_southwest_F + case_southwest_M
 total_pop_southwest_F <- sum(region_pop$Females[region_pop$Region == 'South West'])
 total_pop_southwest_M <- sum(region_pop$Males[region_pop$Region == 'South West'])  
 total_pop_southwest <- total_pop_southwest_F + total_pop_southwest_M
-sw_F_pc <- round(total_pop_southwest_F/total_pop_southwest*100, 2)
-sw_M_pc <- round(total_pop_southwest_M/total_pop_southwest*100, 2)
+sw_F_pc <- round(case_southwest_F/total_pop_southwest_F, 2)
+sw_M_pc <- round(case_southwest_M/total_pop_southwest_M, 2)
 
 # Create a data frame directly
 region_case <- data.frame(
