@@ -44,24 +44,26 @@ acf_pacf_plots(ts_data_training)
 #notable p -->0,1,2,4,
 #notable q from ACF plot--> 1,3,19,12,13
 best_mse <- Inf 
-best_order <- c(0, 0)  
+best_order <- c(0, 0,0)  
+notable_d<-c(1,2,3)
 notable_p <- c(0, 1, 2, 4)
 notable_q <- c(1, 3, 9, 12, 13)
-
-for (p in notable_p) {
-  for (q in notable_q) {
-    arima_model <- Arima(ts_data_copy, order = c(p, 1, q), method = "ML")
-    ts_data_testing_values <- as.numeric(ts_data_testing$prescriptions)
-    forecast_values <- forecast(arima_model, h = length(ts_data_testing_values))
-    
-    forecast_mean_values <- as.numeric(forecast_values$mean)
-    mse <- mean((ts_data_testing_values - forecast_values$mean)^2)
-    
-    cat("Order (p, q):", c(p, q), "  MSE:", mse, "\n")
-    
-    if (mse < best_mse) {
-      best_mse <- mse
-      best_order <- c(p, 1, q)
+for (d in notable_d){
+  for (p in notable_p) {
+    for (q in notable_q) {
+      arima_model <- Arima(ts_data_copy, order = c(p, d, q), method = "ML")
+      ts_data_testing_values <- as.numeric(ts_data_testing$prescriptions)
+      forecast_values <- forecast(arima_model, h = length(ts_data_testing_values))
+      
+      forecast_mean_values <- as.numeric(forecast_values$mean)
+      mse <- mean((ts_data_testing_values - forecast_values$mean)^2)
+      
+      cat("Order (p,d, q):", c(p,d, q), "  MSE:", mse, "\n")
+      
+      if (mse < best_mse) {
+        best_mse <- mse
+        best_order <- c(p, d, q)
+      }
     }
   }
 }
