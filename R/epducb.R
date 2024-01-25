@@ -63,8 +63,13 @@ ggplot(prescription_data_grouped, aes(x = Year, y = Total_Prescriptions, group =
 #max 2-3 plots
 region_pop <- read.csv('data/Regional_pop.csv')
 region_pop_copy<-region_pop
-
-region_pop_copy <- region_pop_copy %>% group_by(Region) %>% summarise(sum = sum(All))
+new_row<-region_pop_copy[region_pop_copy$Age %in% "90+", ]
+new_row$Age <- "90"
+region_pop_copy <- rbind(region_pop_copy, new_row)
+region_pop_copy$Age<-as.numeric(region_pop_copy$Age)
+region_pop_copy <- region_pop_copy[region_pop_copy$Age>50,]
+region_pop_copy$patient_no<-region_pop_copy$Males*0.067 +region_pop_copy$Females* 0.219 
+region_pop_copy <- region_pop_copy %>% group_by(Region) %>% summarise(sum = sum(patient_no))
 region_pop_copy$sum <- as.numeric(region_pop_copy$sum)
 
 
@@ -123,6 +128,7 @@ merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_i
 #Simulation done only for bisphosphonates
 #All medications can be computed as total and graphically represented
 # Plotting the map
+png("output/yearly_bisphosphonate_prescriptions_per_patients.png")
 ggplot(merged_data) +
   geom_sf(aes(fill = per_capita), 
           color = "white", 
@@ -130,13 +136,14 @@ ggplot(merged_data) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Total prescriptions") +
-  labs(title = paste("yearly Bisphosphonates prescriptions" , 
-                     "per capita",
+  labs(title = paste("Yearly Bisphosphonates Prescriptions" , 
+                     "Per Patients",
                      sep = "\n")) +
   theme(plot.title = element_text(hjust = 0.5), 
         panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank())
+dev.off()
 
 png(filename = "output/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
 ggplot(merged_data) +
@@ -349,18 +356,25 @@ names(df_deno)[names(df_deno) == "y_items"] <- "deno"
 
 df_deno<- df_deno %>% group_by(name) %>% summarise(sum=sum(deno))
 df_deno <- inner_join(df_deno, region_id, by = "name")
+df_deno
+df_deno<-inner_join(df_deno,region_pop_copy,by="name")
+df_deno$per_capita<-df_deno$sum.x/df_deno$sum.y
 df_deno<-inner_join(regions, df_deno,by="region_id")
+
 sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
+
+
+
 png(file="output/denosumab prescription.png")
 ggplot(sf_deno) +
-  geom_sf(aes(fill = sum), 
+  geom_sf(aes(fill = per_capita), 
           color = "white", 
           lwd = 0.1) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Denosomab prescriptions") +
-  labs(title = paste("Denosomab prescriptions", 
-                     "over last 5 years",
+  labs(title = paste("Yearly Denosomab prescriptions", 
+                     "per pateint",
                      sep = "\n")) +
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank(), 
