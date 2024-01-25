@@ -283,7 +283,7 @@ dev.off()
 
 
 png(filename = "output/df_drugs_with_time_without_geography.png")
-
+#Patrica this has a legende but the colouring of the lines are wrong 
 ggplot(df_drug_date, aes(x = date)) +
   geom_line(aes(y = BIS, color = "red")) +
   geom_line(aes(y = CA, color = "purple")) +
@@ -305,6 +305,7 @@ ggplot(df_drug_date, aes(x = date)) +
 
 dev.off()
 
+#Patrica this ones the lines are right but the legends are gone
 ggplot(df_drug_date, aes(x = date)) +
   geom_line(aes(y = BIS), color = "red") +
   geom_line(aes(y = CA), color = "purple") +
@@ -327,7 +328,7 @@ ggplot(df_drug_date, aes(x = date)) +
 df_selected<-select(df_drug_date, date, deno,PTH)
 
 png(filename = "output/df_little_drugs_with_time_without_geography.png")
-
+#Patrica this also needs fixing
 ggplot(df_drug_date, aes(x = date)) +
   geom_line(aes(y = deno, color = "Denosumab")) +
   geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
