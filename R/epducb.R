@@ -7,7 +7,7 @@ library(ggpubr)
 library(ggplot2)
 library(scales)
 here()
-setwd(here)
+setwd(here())
 
 
 
@@ -61,6 +61,34 @@ ggplot(prescription_data_grouped, aes(x = Year, y = Total_Prescriptions, group =
 #Trend explainable as 2018 has only data for two months, but generally, drug prescription can be seen to be on a steady decline from peak(2019)
 #Comparatively, another plot should be done including all medications
 #max 2-3 plots
+region_pop <- read.csv('data/Regional_pop.csv')
+region_pop_copy<-region_pop
+
+region_pop_copy <- region_pop_copy %>% group_by(Region) %>% summarise(sum = sum(All))
+region_pop_copy$sum <- as.numeric(region_pop_copy$sum)
+
+
+new_row <- region_pop_copy[region_pop_copy$Region %in% c("Yorkshire & the Humber", "North East"), ]
+new_row$sum <- sum(new_row$sum)
+new_row$Region <- "NORTH EAST AND YORKSHIRE COMMISSIONING REGION"
+region_pop_copy <- rbind(region_pop_copy, new_row)
+
+new_row <- region_pop_copy[region_pop_copy$Region %in% c("East Midlands", "West Midlands"), ]
+new_row$sum <- sum(new_row$sum)
+new_row$Region <- "MIDLANDS COMMISSIONING REGION"
+region_pop_copy <- rbind(region_pop_copy, new_row)
+
+
+
+region_pop_copy$Region[region_pop_copy$Region == "East"] <- "EAST OF ENGLAND COMMISSIONING REGION"
+region_pop_copy$Region[region_pop_copy$Region == "London"] <- "LONDON COMMISSIONING REGION"
+region_pop_copy$Region[region_pop_copy$Region == "North West"] <- "NORTH WEST COMMISSIONING REGION"
+region_pop_copy$Region[region_pop_copy$Region == "South East"] <- "SOUTH EAST COMMISSIONING REGION"
+region_pop_copy$Region[region_pop_copy$Region == "South West"] <- "SOUTH WEST COMMISSIONING REGION"
+
+region_pop_copy$name<-region_pop_copy$Region
+
+
 
 
 #Shape file from ONS
@@ -86,6 +114,8 @@ total_prescriptions_by_region <- total_prescriptions_by_region %>%
   mutate(region_id = row_number())
 region_id <- total_prescriptions_by_region[,c("name","region_id")]
 #merge ONS shapefile and our dataset
+total_prescriptions_by_region<- inner_join(total_prescriptions_by_region, region_pop_copy, by="name")
+total_prescriptions_by_region$per_capita<- total_prescriptions_by_region$total_prescriptions/total_prescriptions_by_region$sum/5
 merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_id")
 
 #Note this map not so important for Q1, just showing how to merge shapefiles and our transformed data
@@ -94,14 +124,14 @@ merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_i
 #All medications can be computed as total and graphically represented
 # Plotting the map
 ggplot(merged_data) +
-  geom_sf(aes(fill = total_prescriptions), 
+  geom_sf(aes(fill = per_capita), 
           color = "white", 
           lwd = 0.1) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Total prescriptions") +
-  labs(title = paste("Bisphosphonates prescriptions", 
-                     "over last 5 years", 
+  labs(title = paste("yearly Bisphosphonates prescriptions" , 
+                     "per capita",
                      sep = "\n")) +
   theme(plot.title = element_text(hjust = 0.5), 
         panel.grid = element_blank(), 
@@ -255,24 +285,44 @@ dev.off()
 png(filename = "output/df_drugs_with_time_without_geography.png")
 
 ggplot(df_drug_date, aes(x = date)) +
-  geom_line(aes(y = BIS, color = "bisphosphates")) +
-  geom_line(aes(y = CA, color = "Calcium and vitamin D")) +
-  geom_line(aes(y = deno, color = "Denosumab")) +
-  geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
+  geom_line(aes(y = BIS, color = "red")) +
+  geom_line(aes(y = CA, color = "purple")) +
+  geom_line(aes(y = deno, color = "blue")) +
+  geom_line(aes(y = PTH, color = "green")) +
   labs(title = paste("Prescriptions per drug",
-          "over the last 5 years", sep = "\n"),
+                     "over the last 5 years", sep = "\n"),
        x = "Date",
        y = "Prescriptions") +
-  scale_color_manual(values = c("bisphosphates" = "red",
-                                "Calcium and vitamin D" = "blue", 
-                                "Denosumab" = "green", 
-                                "Calcitonin and Parathyroid hormones" = "purple"),
+  scale_color_manual(values = c( "red",
+                                 "purple", 
+                                 "blue", 
+                                "green"),
                      labels = c("bisphosphates", 
                                 "Calcium and vitamin D", 
                                 "Denosumab", 
                                 "Calcitonin and Parathyroid hormones")) +
   theme(plot.title = element_text(hjust = 0.5))
+
 dev.off()
+
+ggplot(df_drug_date, aes(x = date)) +
+  geom_line(aes(y = BIS), color = "red") +
+  geom_line(aes(y = CA), color = "purple") +
+  geom_line(aes(y = deno), color = "blue") +
+  geom_line(aes(y = PTH), color = "green") +
+  labs(title = paste("Prescriptions per drug",
+                     "over the last 5 years", sep = "\n"),
+       x = "Date",
+       y = "Prescriptions") +
+  scale_color_manual(values = c("red", "purple", "blue", "green"),
+                     labels = c("bisphosphates", "Calcium and vitamin D", "Denosumab", "Calcitonin and Parathyroid hormones")) +
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(color = "Drug")
+
+
+
+
+
 
 df_selected<-select(df_drug_date, date, deno,PTH)
 
@@ -321,7 +371,7 @@ dev.off()
 
 # Regional Level 
 # Load Dataset
-region_pop <- read.csv('data/Regional_pop.csv')
+
 
 ## 1. East
 case_east_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East' & region_pop$Age >= 50])
