@@ -39,4 +39,27 @@ boxplot(y_items ~ region, data = prescriptions_by_region,
 
 pop_data <- read.csv("data/pop2.csv")
 
+# Remove the , in the males and females numbers to summarise the data easily
+pop_data$Males<-gsub(",","",as.character(pop_data$Males))
+pop_data$Females<-gsub(",","",as.character(pop_data$Females))
+
+pop_data$agecat <- ifelse(pop_data$Age < 50, 'Under 50', '50 and over')
+
+pop_datagrp <- group_by(select(pop_data, agecat, Males, Females), agecat)
+
+
+summarise(pop_datagrp, 
+          pop_male = sum(as.numeric(Males)), 
+          pop_female = sum(as.numeric(Females)))
+
+
+
+
+
+
+
+
+
+
+
 
