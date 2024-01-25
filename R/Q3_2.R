@@ -46,8 +46,8 @@ acf_pacf_plots(ts_data_training)
 best_mse <- Inf 
 best_order <- c(0, 0,0)  
 notable_d<-c(1,2,3)
-notable_p <- c(0, 1, 2, 4)
-notable_q <- c(1, 3, 9, 12, 13)
+notable_p <- c(0:12)
+notable_q <- c(0:13)
 for (d in notable_d){
   for (p in notable_p) {
     for (q in notable_q) {
@@ -86,7 +86,7 @@ legend("bottomright", legend = c("Actual", "Forecast"), col = c("blue", "red"), 
 dev.off()
 
 
-forecast_horizon <- 9
+forecast_horizon <- 11
 ts_data <- ts(ts_data$prescriptions, start = start(ts_data$date), frequency = 1)
 best_model<-Arima(ts_data, order=best_order)
 forecast_values <- forecast(best_model, h = forecast_horizon)
@@ -100,3 +100,4 @@ dev.off()
 residuals <- residuals(best_model)
 box_ljung_test <- Box.test(residuals,  type = "Ljung-Box")
 box_ljung_test$p.value
+
