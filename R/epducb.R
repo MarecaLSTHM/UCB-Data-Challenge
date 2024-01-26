@@ -484,10 +484,6 @@ plot_region_cases_M <- ggplot(region_case_merged) +
         text=element_text(family="Times", size=12))
 
 # Change the title position to the middle. 
-
-# Plot the two maps with a shared legend
-tgrob <- text_grob('Number of Cases by Region (England)',size = 20)
-as_ggplot(tgrob) 
 ggarrange(plot_region_cases_F, plot_region_cases_M, 
           ncol = 2, nrow = 1, 
           common.legend = TRUE, legend = "right")
@@ -504,13 +500,14 @@ plot_pc_region_cases_F <- ggplot(region_case_merged) +
           color = 'white',
           lwd = 0.1) + 
   scale_fill_viridis_c(name = 'Number of Cases per capita', limits = scale_limits, labels = scales::label_comma(), option = 'rocket') +
-  ggtitle('Number of Cases by Region') +
+  ggtitle('Number of Cases by Region per Capita') +
   labs(subtitle = 'Female') +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(), 
         axis.ticks = element_blank(),
         plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
+        panel.background = element_rect(fill = "white", color = NA), 
+        text=element_text(family="Times", size=12))
 
 # Plot per capita number of cases for each region (Male)
 plot_pc_region_cases_M <- ggplot(region_case_merged) +
@@ -523,7 +520,8 @@ plot_pc_region_cases_M <- ggplot(region_case_merged) +
         axis.text = element_blank(), 
         axis.ticks = element_blank(),
         plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
+        panel.background = element_rect(fill = "white", color = NA), 
+        text=element_text(family="Times", size=12))
 
 # Plot the two maps with a shared legend
 ggarrange(plot_pc_region_cases_F, plot_pc_region_cases_M, 
