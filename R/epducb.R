@@ -356,7 +356,6 @@ dev.off()
 # Regional Level 
 # Load Dataset
 
-
 ## 1. East
 case_east_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East' & region_pop$Age >= 50])
 case_east_M <- 0.067 * sum(region_pop$Males[region_pop$Region == 'East' & region_pop$Age >= 50])
@@ -466,7 +465,8 @@ plot_region_cases_F <- ggplot(region_case_merged) +
         axis.text = element_blank(), 
         axis.ticks = element_blank(),
         plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
+        panel.background = element_rect(fill = "white", color = NA),
+        text=element_text(family="Times", size=12))
 
 library(RColorBrewer)
 # Plot number of cases for each region (Male)
@@ -480,7 +480,10 @@ plot_region_cases_M <- ggplot(region_case_merged) +
         axis.text = element_blank(), 
         axis.ticks = element_blank(),
         plot.background = element_rect(fill = "white", color = NA),
-        panel.background = element_rect(fill = "white", color = NA))
+        panel.background = element_rect(fill = "white", color = NA),
+        text=element_text(family="Times", size=12))
+
+# Change the title position to the middle. 
 
 # Plot the two maps with a shared legend
 ggarrange(plot_region_cases_F, plot_region_cases_M, 
