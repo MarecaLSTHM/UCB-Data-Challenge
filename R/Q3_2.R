@@ -74,7 +74,7 @@ for (d in notable_d){
     }
   }
 }
-best_order
+best_order<-c(3,1,11)
 
 
 
@@ -100,15 +100,20 @@ ggplot(plot_data, aes(x = months_since_cutoff)) +
   labs(
     y = "Prescriptions",
     x = "Months since cutoff",
-    title = "Predictions for the 12 months verus testing data set"
+    title = "Predictions for the 12 months versus testing data set"
   ) +
   theme_bw() +
-  ylim(0, 600000) +
   scale_color_manual(
-    values = c("Observed" = "blue", "Forecasted" = "red") # Add a legend title
+    values = c("Observed" = "blue", "Forecasted" = "red")
   ) +
-  theme(text = element_text(family = "Times New Roman", size = 12))  # Times New Roman, 12pt, Bold
-  +scale_y_continuous(labels = no_sci_format)
+  theme(text = element_text(family = "Times New Roman", size = 12)) +
+  scale_y_continuous(labels = scales::comma_format()) +
+  coord_cartesian(ylim = c(0, 600000))
+
+
+
+
+
 
 dev.off()
 
