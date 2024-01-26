@@ -16,13 +16,15 @@ library(tidyr)
 df_long <- gather(df, key = "Gender", value = "Risk", Males_risk, Females_risk)
 
 png("output/osteoporosis_population_2018_2022.png")
+options(scipen = 999)
 ggplot(df_long, aes(x = years, y = Risk, fill = Gender)) +
   geom_bar(stat = "identity", position = "stack") +
-  labs(title = "Male and Female Estimated osteoporosis populations Over the Years",
+  labs(title = "Estimated Osteoporosis Populations Over the Years by Gender",
        x = "Year",
        y = "Population at Risk") +
-  scale_fill_manual(values = c("pink", "blue"),  
-                    labels = c("Female", "Male")) +  
-  theme_minimal()
+  scale_fill_discrete(labels=c('Females at Risk', 'Males at Risk'))+
+  theme_bw() + 
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold
 
 dev.off()
+
