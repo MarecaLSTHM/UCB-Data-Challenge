@@ -50,7 +50,7 @@ ggplot(df_long, aes(x = Year, y = Value, fill = Gender)) +
   geom_bar(stat = "identity") +
   labs(title = "Predicted Osteoporosis population",
        x = "Year",
-       y = "Population(thousands",
+       y = "Population(thousands)",
        fill = "Gender") +
   scale_fill_manual(values = c("Pink", "Blue"), name = "Gender") + 
   theme_bw()+
