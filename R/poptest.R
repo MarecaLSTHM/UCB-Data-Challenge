@@ -28,10 +28,20 @@ print(total_osteoporosis_population)
 # comment test
 
 png("output/population_at_risk.png")
-barplot(height = c(percentage_of_men,percentage_of_women),
-        names.arg = c("Men", "Women"),
-        col = c("blue", "pink"),
-        main = "estitmated Osteoporosis population in England (2022)",
-        ylab = "population at risk", 
-        ylim =(c(0, max(percentage_of_women)*1.3)))
+
+percentage_data <- data.frame(
+  category = c("Men", "Women"),
+  percentage = c(percentage_of_men, percentage_of_women))
+colnames(percentage_data) <- c('Gender', 'Counts')
+
+p <- ggplot(percentage_data, aes(x = Gender, y = percentage_data$Counts, fill = Gender)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Estimated Osteoporosis Population in England (2022)",
+    y = "Population at Risk") +
+  scale_color_manual()+
+#  ylim(0, max(percentage_of_women) * 1.3) +
+  theme_bw() +
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold)
+print(p+labs(y= "Population at Risk"))
+
 dev.off()
