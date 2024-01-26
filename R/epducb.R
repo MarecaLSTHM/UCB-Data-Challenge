@@ -303,28 +303,7 @@ trend_plot <- ggplot(df_drug_date_long, aes(x = Year, y = Values)) +
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 
 print(trend_plot+labs(y= "Number of Prescriptions"))
-
 dev.off()
-
-#Patrica this ones the lines are right but the legends are gone
-ggplot(df_drug_date, aes(x = date)) +
-  geom_line(aes(y = BIS), color = "red") +
-  geom_line(aes(y = CA), color = "purple") +
-  geom_line(aes(y = deno), color = "blue") +
-  geom_line(aes(y = PTH), color = "green") +
-  labs(title = paste("Prescriptions per drug",
-                     "over the last 5 years", sep = "\n"),
-       x = "Date",
-       y = "Prescriptions") +
-  scale_color_manual(values = c("red", "purple", "blue", "green"),
-                     labels = c("bisphosphates", "Calcium and vitamin D", "Denosumab", "Calcitonin and Parathyroid hormones")) +
-  theme(plot.title = element_text(hjust = 0.5))+
-  labs(color = "Drug")
-
-
-
-
-
 
 df_selected<-select(df_drug_date, date, deno,PTH)
 
