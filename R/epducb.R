@@ -486,6 +486,8 @@ plot_region_cases_M <- ggplot(region_case_merged) +
 # Change the title position to the middle. 
 
 # Plot the two maps with a shared legend
+tgrob <- text_grob('Number of Cases by Region (England)',size = 20)
+as_ggplot(tgrob) 
 ggarrange(plot_region_cases_F, plot_region_cases_M, 
           ncol = 2, nrow = 1, 
           common.legend = TRUE, legend = "right")
