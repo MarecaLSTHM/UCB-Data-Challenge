@@ -291,25 +291,13 @@ dev.off()
 
 png(filename = "output/df_drugs_with_time_without_geography.png")
 #Patrica this has a legende but the colouring of the lines are wrong 
-ggplot(df_drug_date, aes(x = date)) +
-  geom_line(aes(y = BIS, color = "red")) +
-  geom_line(aes(y = CA, color = "purple")) +
-  geom_line(aes(y = deno, color = "blue")) +
-  geom_line(aes(y = PTH, color = "green")) +
-  labs(title = paste("Prescriptions per drug",
-                     "over the last 5 years", sep = "\n"),
-       x = "Date",
-       y = "Prescriptions") +
-  scale_color_manual(values = c( "red",
-                                 "purple", 
-                                 "blue", 
-                                "green"),
-                     labels = c("bisphosphates", 
-                                "Calcium and vitamin D", 
-                                "Denosumab", 
-                                "Calcitonin and Parathyroid hormones")) +
-  theme(plot.title = element_text(hjust = 0.5))
-
+#Patrica this has a legend but the colouring of the lines are wrong 
+colnames(df_drug_date) <- c('Date', 'Bisphosphonates', 'Calcium', 'Denosumab', 'Parathyroid Hormones & Analogues')
+library(data.table)
+df_drug_date_long <- melt(setDT(df_drug_date), id.vars = c("Date"), variable.name = 'medication')
+ggplot(df_drug_date_long, aes(x = Date, y = value)) + 
+  geom_line(aes(colour = medication, group = medication))+
+  theme_bw() 
 dev.off()
 
 #Patrica this ones the lines are right but the legends are gone
