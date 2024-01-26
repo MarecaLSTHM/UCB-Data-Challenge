@@ -1,6 +1,12 @@
 library(here)
 library(tidyr)
 library(ggplot2)
+library(extrafont)
+
+here()
+setwd(here())
+font_import()
+loadfonts(device="win")
 here()
 setwd(here())
 df_male<-read.csv("data/male_population_predict.csv")
@@ -47,7 +53,8 @@ ggplot(df_long, aes(x = Year, y = Value, fill = Gender)) +
        y = "Population(thousands",
        fill = "Gender") +
   scale_fill_manual(values = c("Pink", "Blue"), name = "Gender") + 
-  theme_minimal()+
+  theme_bw()+
+  theme(text=element_text(family="Times New Roman", size=12))+
   scale_y_continuous(breaks = seq(0,4000, by = 400)) 
 
 dev.off()

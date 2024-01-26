@@ -12,7 +12,7 @@ font_import()
 loadfonts(device="win")
 
 
-data11 <- read.csv("data/BISPHOSPHATES_NHS_REGIONS.csv")
+data11 <- read.csv("data/deno_NHS_REGIONS.csv")
 data11 <- data11%>%
   select(date, name,y_items)
 
@@ -81,7 +81,7 @@ best_order
 
 
 best_model<-Arima(ts_data_copy, order=best_order)
-forecast_values <- forecast(best_model, h =12)
+forecast_values <- forecast(best_model, h = length(ts_data_testing_values))
 forecast_mean_values <- as.numeric(forecast_values$mean)
 ts_data_testing_numeric <- as.numeric(ts_data_testing$prescriptions)
 plot_data <- data.frame(
@@ -89,11 +89,7 @@ plot_data <- data.frame(
   prescriptions = ts_data_testing_numeric,
   forecast_mean = forecast_mean_values
 )
-plot.new()
-no_sci_format <- function(x) {
-  format(x, scientific = FALSE)
-}
-png("output/prediction_bisphosphates.png")
+png("output/prediction_denosumab.png")
 ggplot(plot_data, aes(x = months_since_cutoff)) +
   geom_line(aes(y = prescriptions, color = "Observed"), size = 1.2) +
   geom_line(aes(y = forecast_mean, color = "Forecasted"), size = 1.2) +
@@ -103,16 +99,15 @@ ggplot(plot_data, aes(x = months_since_cutoff)) +
     title = "Predictions for the 12 months verus testing data set"
   ) +
   theme_bw() +
-  ylim(0, 600000) +
+  ylim(0, 6000) +
   scale_color_manual(
     values = c("Observed" = "blue", "Forecasted" = "red") # Add a legend title
   ) +
   theme(text = element_text(family = "Times New Roman", size = 12))  # Times New Roman, 12pt, Bold
-  +scale_y_continuous(labels = no_sci_format)
 
 dev.off()
 
-#  +legend("bottomright", legend = c("Actual", "Forecast"), col = c("blue", "red"), lty = 1, text.font = 2)
+
 
 
 
@@ -125,9 +120,9 @@ best_model<-Arima(ts_data, order=best_order)
 forecast_values <- forecast(best_model, h = forecast_horizon)
 
 
-png("output/prediction_bisphosphates_2.png")
+png("output/prediction_denosomab_2.png")
 par(family = "serif", font = 2)
-plot(forecast_values, main = "Bisphosphonates Forecast", ylab="total prescriptions", xlab="month",ylim=c(0,600000))
+plot(forecast_values, main = "Denosomab Forecast", ylab="total prescriptions", xlab="month", ylim=c(0,6000))
 
 dev.off()
 
@@ -139,6 +134,3 @@ dev.off()
 residuals <- residuals(best_model)
 box_ljung_test <- Box.test(residuals,  type = "Ljung-Box")
 box_ljung_test$p.value
-
-best_order
-
