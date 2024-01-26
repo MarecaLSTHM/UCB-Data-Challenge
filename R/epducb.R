@@ -308,18 +308,14 @@ dev.off()
 df_selected<-select(df_drug_date, date, deno,PTH)
 
 png(filename = "output/df_little_drugs_with_time_without_geography.png")
-#Patrica this also needs fixing
-ggplot(df_drug_date, aes(x = date)) +
-  geom_line(aes(y = deno, color = "Denosumab")) +
-  geom_line(aes(y = PTH, color = "Calcitonin and Parathyroid hormones")) +
-  labs(title = "Different drug prescriptions",
-       x = "Date",
-       y = "Prescriptions") +
-  scale_color_manual(values = c( "Denosumab" = "green", 
-                                 "Calcitonin and Parathyroid hormones" = "purple"),
-                     labels = c( "Calcitonin and Parathyroid hormones",
-                                 "Denosumab")) +
-  theme(plot.title = element_text(hjust = 0.5))  # Center the title
+
+# Denosumab and Parathyroid Hormones & Analogues Trend Plot
+df_drug_long_sub <- subset(df_drug_date_long, Medication == 'Denosumab' | Medication == 'Parathyroid Hormones & Analogues')
+trend_plot <- ggplot(df_drug_long_sub, aes(x = Year, y = Values)) + 
+  geom_line(aes(colour = Medication, group = Medication))+
+  theme_bw()+
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
+print(trend_plot+labs(y= "Number of Prescriptions"))
 
 dev.off()
 
