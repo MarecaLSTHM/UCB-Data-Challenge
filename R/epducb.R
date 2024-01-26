@@ -290,8 +290,8 @@ dev.off()
 
 
 png(filename = "output/df_drugs_with_time_without_geography.png")
-#Patrica this has a legende but the colouring of the lines are wrong 
-#Patrica this has a legend but the colouring of the lines are wrong 
+
+# Plot Prescription Trends from 2019-2023
 colnames(df_drug_date) <- c('Date', 'Bisphosphonates', 'Calcium', 'Denosumab', 'Parathyroid Hormones & Analogues')
 library(data.table)
 df_drug_date_long <- melt(setDT(df_drug_date), id.vars = c("Date"), variable.name = 'medication')
