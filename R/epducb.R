@@ -234,7 +234,8 @@ ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = 
        y = "Number of Prescriptions",
        color = "Bisphosphate type") +
   scale_y_continuous(labels = scales::label_number_si()) +
-  theme_minimal()
+  theme_bw()+
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 dev.off()
 
 
