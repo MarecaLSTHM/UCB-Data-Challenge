@@ -230,8 +230,8 @@ ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = 
   geom_line() +
   geom_point() +
   labs(title = "Prescriptions for different bisphosphonates",
-       x = "Date",
-       y = "Prescriptions",
+       x = "Year",
+       y = "Number of Prescriptions",
        color = "Bisphosphate type") +
   scale_y_continuous(labels = scales::label_number_si()) +
   theme_minimal()
@@ -279,7 +279,7 @@ png("output/denosumab_trend.png")
 ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
   geom_line() +
   geom_point() +
-  labs(title = "Presciptions of different types of Bisphosphonates",
+  labs(title = "Presciptions of Denosumab last 5 years.",
        x = "Year",
        y = "Number of prescriptions",
   ) +
