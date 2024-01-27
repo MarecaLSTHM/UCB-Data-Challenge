@@ -284,7 +284,8 @@ ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
        y = "Number of prescriptions",
   ) +
   geom_smooth(method = "lm", se = FALSE, color = "red", size = 1) +
-  theme_minimal()
+  theme_bw()+
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 dev.off()
 
 
