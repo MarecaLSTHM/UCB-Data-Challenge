@@ -279,9 +279,9 @@ png("output/denosumab_trend.png")
 ggplot(df_drug_date_deno, aes(x = date, y = deno)) +
   geom_line() +
   geom_point() +
-  labs(title = "different amount of drug presciption",
-       x = "Date",
-       y = "Count",
+  labs(title = "Presciptions of different types of Bisphosphonates",
+       x = "Year",
+       y = "Number of prescriptions",
   ) +
   geom_smooth(method = "lm", se = FALSE, color = "red", size = 1) +
   theme_minimal()
