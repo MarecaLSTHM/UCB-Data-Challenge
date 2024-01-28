@@ -357,6 +357,7 @@ dev.off()
 
 # Regional Level 
 # Load Dataset
+region_pop <- read.csv('data/Regional_pop.csv')
 
 ## 1. East
 case_east_F <- 0.219 * sum(region_pop$Females[region_pop$Region == 'East' & region_pop$Age >= 50])
@@ -442,9 +443,7 @@ region_case <- data.frame(
   per_capita_M = c(east_M_pc, london_M_pc, mid_M_pc, ny_M_pc, nw_M_pc, se_M_pc, sw_M_pc)
 )
 
-
-# Display the data frame
-print(region_case)
+region_case
 
 # Merge ONS shapefile and regional number of cases
 region_case_merged <- cbind(regions, region_case, by.x = 'NHSER21NM', by.y = 'Region')
@@ -557,4 +556,15 @@ region_case <- data.frame(
   proportion_of_50_F = c(F_prop_EastofEngland, F_prop_London, F_prop_mid, F_prop_NE_Y, F_prop_NorthWest, F_prop_SouthEast, F_prop_SouthWest), 
   proportion_of_50_M = c(M_prop_EastofEngland, M_prop_London, M_prop_mid, M_prop_NE_Y, M_prop_NorthWest, M_prop_SouthEast, M_prop_SouthWest)
 )
+
+
+# Plot the estimated population change over the years by region. 
+ggplot(df_long, aes(x = years, y = Risk, fill = region)) +
+  geom_line(aes(colour = )) +
+  labs(title = "Estimated Osteoporosis Populations Over the Years by Gender",
+       x = "Year",
+       y = "Population at Risk") +
+  scale_fill_discrete(labels=c('Females at Risk', 'Males at Risk'))+
+  theme_bw() + 
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt
 
