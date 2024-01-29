@@ -24,7 +24,18 @@ ggplot(df_long, aes(x = years, y = Risk, fill = Gender)) +
        y = "Population at Risk") +
   scale_fill_discrete(labels=c('Females at Risk', 'Males at Risk'))+
   theme_bw() + 
-  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold
+  theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt
+df_long$Total <- df_long$Female + df_long$Male
+ggplot(df_long, aes(x = years, y = Risk, fill = Gender)) +
+  geom_line(aes(color = Gender), stat = "identity", position = "stack") +
+  geom_line(aes(y = Total, color = "Total"), linetype = "dashed", size = 1) + # Add the Total line
+  labs(title = "Estimated Osteoporosis Populations Over the Years by Gender",
+       x = "Year",
+       y = "Population at Risk") +
+  #  scale_fill_discrete(labels = c('Females at Risk', 'Males at Risk')) +
+  # scale_color_manual(values = c('Female' = 'red', 'Male' = 'blue', 'Total' = 'purple')) +  # Set color for the Total line
+  theme_bw() + 
+  theme(text = element_text(family = "Times", size = 12))  # Times New Roman, 12pt
 
 dev.off()
 
