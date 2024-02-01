@@ -55,7 +55,7 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items,
   scale_y_continuous(labels = scales::label_number_si()) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Set breaks and labels for years
   # Center the title, remove gridlines and change background
-  theme(plot.title = element_text(hjust = 0.5), text=element_text(family="Times", size=12)) +
+  theme(text=element_text(family="Times", size=12)) +
   theme_bw() #Times New Roman, 12pt, Bold 
 
 
