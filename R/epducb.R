@@ -228,6 +228,7 @@ ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = 
        y = "Number of Prescriptions",
        color = "Bisphosphate type") +
   scale_y_continuous(labels = scales::label_number_si()) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme_bw()+
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 dev.off()
@@ -295,10 +296,12 @@ df_drug_date_long <- melt(setDT(df_drug_date), id.vars = c("Date"), variable.nam
 colnames(df_drug_date_long) <- c('Year', 'Medication', 'Values')
 trend_plot <- ggplot(df_drug_date_long, aes(x = Year, y = Values)) + 
   geom_line(aes(colour = Medication, group = Medication))+
+  scale_y_continuous(labels = scales::label_number_si()) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme_bw()+
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 
-print(trend_plot+labs(y= "Number of Prescriptions"))
+print(trend_plot+labs(title="Prescription trends over time", y= "Number of Prescriptions"))
 dev.off()
 
 df_selected<-select(df_drug_date, date, deno,PTH)
@@ -309,9 +312,11 @@ png(filename = "output/df_little_drugs_with_time_without_geography.png")
 df_drug_long_sub <- subset(df_drug_date_long, Medication == 'Denosumab' | Medication == 'Parathyroid Hormones & Analogues')
 trend_plot <- ggplot(df_drug_long_sub, aes(x = Year, y = Values)) + 
   geom_line(aes(colour = Medication, group = Medication))+
+  scale_y_continuous(labels = scales::label_number_si()) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme_bw()+
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
-print(trend_plot+labs(y= "Number of Prescriptions"))
+print(trend_plot+labs(title = "Denosumab and Parathyroid Hormones trends", y= "Number of Prescriptions"))
 
 dev.off()
 
