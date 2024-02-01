@@ -151,6 +151,7 @@ ggplot(merged_data) +
                       high = "red", 
                       name = "Total prescriptions") +
   labs(title = "Bisphosphonates prescriptions over last 5 years") +
+  theme_bw() +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank()) 
