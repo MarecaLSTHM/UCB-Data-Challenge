@@ -81,8 +81,7 @@ ggplot(combined_data, aes(x = date, y = y_items,
                                 "East of England" = 21,
                                 "South West"= 22)) +
   scale_y_continuous(labels = scales::label_number_si()) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y") +  # Set breaks and labels for years
-  theme(plot.title = element_text(hjust = 0.5))  # Center the title
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y"))  # Center the title
 
 dev.off()
 
