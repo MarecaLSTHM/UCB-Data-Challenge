@@ -136,11 +136,8 @@ ggplot(merged_data) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Total prescriptions") +
-  labs(title = paste("Yearly Bisphosphonates Prescriptions" , 
-                     "Per Patients",
-                     sep = "\n")) +
-  theme(plot.title = element_text(hjust = 0.5), 
-        panel.grid = element_blank(), 
+  labs(title = "Yearly Bisphosphonates Prescriptions Per Patients") +
+  theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank())
 dev.off()
@@ -153,11 +150,8 @@ ggplot(merged_data) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Total prescriptions") +
-  labs(title = paste("Bisphosphonates prescriptions", 
-                     "over last 5 years", 
-                     sep = "\n")) +
-  theme(plot.title = element_text(hjust = 0.5), 
-        panel.grid = element_blank(), 
+  labs(title = "Bisphosphonates prescriptions over last 5 years") +
+  theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank()) 
 dev.off()
@@ -343,14 +337,11 @@ ggplot(sf_deno) +
           lwd = 0.1) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
-                      name = "Denosomab prescriptions") +
-  labs(title = paste("Yearly Denosomab prescriptions", 
-                     "per pateint",
-                     sep = "\n")) +
+                      name = "Denosumab prescriptions") +
+  labs(title = "Yearly Denosumab prescriptions per pateint") +
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank(), 
-        panel.grid = element_blank(),
-        plot.title = element_text(hjust = 0.5))
+        panel.grid = element_blank())
 dev.off()
 ###yoooo i also did it 
 
