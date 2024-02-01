@@ -136,7 +136,8 @@ ggplot(merged_data) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Total prescriptions") +
-  labs(title = "Yearly Bisphosphonates Prescriptions Per Patients") +
+  labs(title = "Bisphosphonates prescriptions per patient per region") +
+  theme_bw() +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank())
@@ -344,7 +345,8 @@ ggplot(sf_deno) +
   scale_fill_gradient(low = "orange", 
                       high = "red", 
                       name = "Denosumab prescriptions") +
-  labs(title = "Yearly Denosumab prescriptions per pateint") +
+  labs(title = "Denosumab prescriptions per patient per region") +
+  theme_bw() + 
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank(), 
         panel.grid = element_blank())
