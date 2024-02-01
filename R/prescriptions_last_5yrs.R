@@ -40,8 +40,7 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items,
   geom_line() +
   # geom_path(aes(group=Region)) +
   geom_point() + 
-  labs(title = paste("Prescription of Bisphosphonates in", 
-                     "regions of England in the last 5 years", sep = '\n'),
+  labs(title = "Prescription of Bisphosphonates in regions of England in the last 5 years",
        x = "Year",
        y = "Number of Prescriptions",
        color = "Region",
@@ -69,8 +68,7 @@ ggplot(combined_data, aes(x = date, y = y_items,
                           color = Region, shape = Region)) +
   geom_line() +
   geom_point() + 
-  labs(title = paste("Prescription of Bisphosphonates in", 
-                     "regions of England in the last 5 years", sep = '\n'),
+  labs(title = "Prescription of Bisphosphonates in regions of England in the last 5 years",
        x = "Date",
        y = "Prescriptions",
        color = "Region",
