@@ -4,7 +4,7 @@ library(dplyr)
 library(tseries)
 library(forecast)
 library(extrafont)
-
+library(Kendall)
 library(ggplot2)
 here()
 setwd(here())
@@ -17,6 +17,7 @@ data11 <- data11%>%
   select(date, name,y_items)
 
 ts_data<-data11 %>% group_by(date) %>% summarise(prescriptions=sum(y_items))
+ts_data_copy_2<-ts_data
 ts_data$date<-as.Date(ts_data$date)
 
 ts_data_training <- ts_data %>% filter(date < as.Date("2022-11-01"))
@@ -134,3 +135,12 @@ dev.off()
 residuals <- residuals(best_model)
 box_ljung_test <- Box.test(residuals,  type = "Ljung-Box")
 box_ljung_test$p.value
+
+
+ts_data<-ts_data_copy_2$prescriptions
+
+Predict_with_all<-c(ts_data,forecast_mean_values)
+MannKendall(Predict_with_all)
+
+ts_data_copy$prescriptions
+
