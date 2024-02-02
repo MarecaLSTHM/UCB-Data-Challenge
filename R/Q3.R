@@ -14,7 +14,7 @@ df_female<-read.csv("data/female_populaiton_predict.csv")
 df_male$Age<-as.factor(df_male$Age)
 summary(df_male)
 
-
+df_previous<-read.csv("data/population_over_50.csv")
 
 df_male[, -1] <- lapply(df_male[, -1], function(x) {
   as.numeric(gsub(",", "", as.character(x)))
