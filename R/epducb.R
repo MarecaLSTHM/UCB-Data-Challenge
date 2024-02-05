@@ -133,9 +133,8 @@ ggplot(merged_data) +
   geom_sf(aes(fill = per_capita), 
           color = "white", 
           lwd = 0.1) +
-  scale_fill_gradient(low = "orange", 
-                      high = "red", 
-                      name = "Total prescriptions") +
+  # scale_fill_gradient(low = "orange", high = "red", name = "Total prescriptions") +
+  scale_fill_viridis_c(name = 'Total prescriptions') +
   labs(title = "Bisphosphonates prescriptions per patient per region") +
   theme_bw() +
   theme(panel.grid = element_blank(), 
@@ -148,9 +147,8 @@ ggplot(merged_data) +
   geom_sf(aes(fill = total_prescriptions), 
           color = "white", 
           lwd = 0.1) +
-  scale_fill_gradient(low = "orange", 
-                      high = "red", 
-                      name = "Total prescriptions") +
+  #scale_fill_gradient(low = "orange", high = "red", name = "Total prescriptions") +
+  scale_fill_viridis_c(name = 'Total prescriptions') +
   labs(title = "Bisphosphonates prescriptions over last 5 years") +
   theme_bw() +
   theme(panel.grid = element_blank(), 
@@ -342,9 +340,8 @@ ggplot(sf_deno) +
   geom_sf(aes(fill = per_capita), 
           color = "white", 
           lwd = 0.1) +
-  scale_fill_gradient(low = "orange", 
-                      high = "red", 
-                      name = "Denosumab prescriptions") +
+  # scale_fill_gradient(low = "orange", high = "red", name = "Denosumab prescriptions") +
+  scale_fill_viridis_c(name = 'Denosumab prescriptions') +
   labs(title = "Denosumab prescriptions per patient per region") +
   theme_bw() + 
   theme(axis.text = element_blank(),   
