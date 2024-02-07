@@ -135,7 +135,7 @@ ggplot(merged_data) +
           lwd = 0.1) +
   # scale_fill_gradient(low = "orange", high = "red", name = "Total prescriptions") +
   scale_fill_viridis_c(name = 'Total prescriptions') +
-  labs(title = "Bisphosphonates prescriptions per patient per region") +
+  # labs( title = "Bisphosphonates prescriptions per patient per region") +
   theme_bw() +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
@@ -149,7 +149,7 @@ ggplot(merged_data) +
           lwd = 0.1) +
   #scale_fill_gradient(low = "orange", high = "red", name = "Total prescriptions") +
   scale_fill_viridis_c(name = 'Total prescriptions') +
-  labs(title = "Bisphosphonates prescriptions over last 5 years") +
+  # labs(title = "Bisphosphonates prescriptions over last 5 years") +
   theme_bw() +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
@@ -223,7 +223,7 @@ png(filename="output/bisphosphonates_types.png")
 ggplot(df_all_bisphosphates_without_geography, aes(x = date, y = count, color = drug)) +
   geom_line() +
   geom_point() +
-  labs(title = "Prescriptions for different bisphosphonates",
+  labs(# title = "Prescriptions for different bisphosphonates",
        x = "Year",
        y = "Number of Prescriptions",
        color = "Bisphosphate type") +
@@ -290,7 +290,7 @@ png(filename = "output/df_drugs_with_time_without_geography.png")
 
 # Plot Prescription Trends from 2019-2023
 library(ggthemes)
-colnames(df_drug_date) <- c('Date', 'Bisphosphonates', 'Calcium', 'Denosumab', 'Parathyroid Hormones & Analogues')
+colnames(df_drug_date) <- c('Date', 'Bisphosphonates', 'Calcium', 'Denosumab', 'PTH')
 library(data.table)
 df_drug_date_long <- melt(setDT(df_drug_date), id.vars = c("Date"), variable.name = 'Medication')
 colnames(df_drug_date_long) <- c('Year', 'Medication', 'Values')
@@ -301,7 +301,7 @@ trend_plot <- ggplot(df_drug_date_long, aes(x = Year, y = Values)) +
   theme_bw()+
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 
-print(trend_plot+labs(title="Prescription trends over time", y= "Number of Prescriptions"))
+print(trend_plot+labs(y= "Number of Prescriptions"))
 dev.off()
 
 df_selected<-select(df_drug_date, date, deno,PTH)
@@ -310,13 +310,18 @@ png(filename = "output/df_little_drugs_with_time_without_geography.png")
 
 # Denosumab and Parathyroid Hormones & Analogues Trend Plot
 df_drug_long_sub <- subset(df_drug_date_long, Medication == 'Denosumab' | Medication == 'Parathyroid Hormones & Analogues')
+# Transform Parathyroid Hormones & Analogues to PTH
+df_drug_long_sub$Medication <- ifelse(df_drug_long_sub$Medication == 'Parathyroid Hormones & Analogues', 
+                                      'PTH', 
+                                      'Denosumab')
+
 trend_plot <- ggplot(df_drug_long_sub, aes(x = Year, y = Values)) + 
   geom_line(aes(colour = Medication, group = Medication))+
   scale_y_continuous(labels = scales::label_number_si()) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
   theme_bw()+
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
-print(trend_plot+labs(title = "Denosumab and Parathyroid Hormones trends", y= "Number of Prescriptions"))
+print(trend_plot+labs(y= "Number of Prescriptions"))
 
 dev.off()
 
@@ -342,7 +347,7 @@ ggplot(sf_deno) +
           lwd = 0.1) +
   # scale_fill_gradient(low = "orange", high = "red", name = "Denosumab prescriptions") +
   scale_fill_viridis_c(name = 'Denosumab prescriptions') +
-  labs(title = "Denosumab prescriptions per patient per region") +
+  # labs(title = "Denosumab prescriptions per patient per region") +
   theme_bw() + 
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank(), 

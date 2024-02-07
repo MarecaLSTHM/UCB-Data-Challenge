@@ -40,7 +40,7 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items,
   geom_line() +
   # geom_path(aes(group=Region)) +
   geom_point() + 
-  labs(title = "Prescription trends of Bisphosphonates (past 5 years)",
+  labs(# title = "Prescription trends of Bisphosphonates (past 5 years)",
        x = "Year",
        y = "Number of Prescriptions",
        color = "Region",
