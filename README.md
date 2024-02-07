@@ -1,6 +1,6 @@
 # UCB-Data-Challenge
 
-This GitHub repository serves as a code and data management tool for Team UCB.
+This data repository serves as a code and data management tool for Team UCB.
 
 The final scripts that produce the figures in the team report are placed in the **R Production** folder and the script files are named as (Figure X.R)
 to correspond with each figure.
