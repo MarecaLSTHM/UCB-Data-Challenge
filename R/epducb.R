@@ -6,9 +6,10 @@ library(kableExtra)
 library(ggpubr)
 library(ggplot2)
 library(scales)
+library(RColorBrewer)
+
 here()
 setwd(here())
-
 
 
 #data11=biphosphonates data from open prescribing
@@ -39,7 +40,6 @@ ggplot(data11, aes(x = date, y = y_items, group = 1)) +
   theme(plot.title = element_text(hjust = 0.5))  # Center the title
   theme_minimal()
 
-##2nd this is a bit sus at the very le
 
 #Group total number of items per year
 prescription_data_grouped <- data11 %>%
@@ -470,7 +470,6 @@ plot_region_cases_F <- ggplot(region_case_merged) +
         panel.background = element_rect(fill = "white", color = NA),
         text=element_text(family="Times", size=12))
 
-library(RColorBrewer)
 # Plot number of cases for each region (Male)
 plot_region_cases_M <- ggplot(region_case_merged) +
   geom_sf(aes(fill = case_Males), 
