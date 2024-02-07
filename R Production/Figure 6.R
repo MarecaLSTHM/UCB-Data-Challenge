@@ -22,8 +22,7 @@ df_deno<-inner_join(regions, df_deno,by="region_id")
 sf_deno <- st_as_sf(df_deno, coords = c("LONG", "LAT"), crs = 4326)
 
 
-
-png(file="output/denosumab prescription.png")
+# png(file="output/denosumab prescription.png")
 ggplot(sf_deno) +
   geom_sf(aes(fill = per_capita), 
           color = "white", 
@@ -35,4 +34,4 @@ ggplot(sf_deno) +
   theme(axis.text = element_blank(),   
         axis.ticks = element_blank(), 
         panel.grid = element_blank())
-dev.off()
+# dev.off()
