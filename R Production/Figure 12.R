@@ -90,6 +90,10 @@ plot_data <- data.frame(
   prescriptions = ts_data_testing_numeric,
   forecast_mean = forecast_mean_values
 )
+
+
+
+###this plots fig 12.1 
 png("output/prediction_denosumab.png")
 ggplot(plot_data, aes(x = months_since_cutoff)) +
   geom_line(aes(y = prescriptions, color = "Observed"), size = 1.2) +
@@ -120,6 +124,7 @@ best_model<-Arima(ts_data, order=best_order)
 forecast_values <- forecast(best_model, h = forecast_horizon)
 
 
+###this plots fig 12.2
 png("output/prediction_denosomab_2.png")
 par(family = "serif", font = 2)
 plot(forecast_values,  xlab="month", ylim=c(0,6000))
