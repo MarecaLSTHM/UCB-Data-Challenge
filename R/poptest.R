@@ -33,15 +33,14 @@ percentage_data <- data.frame(
   category = c("Men", "Women"),
   percentage = c(percentage_of_men, percentage_of_women))
 colnames(percentage_data) <- c('Gender', 'Counts')
-
+library(ggplot2)
 p <- ggplot(percentage_data, aes(x = Gender, y = percentage_data$Counts, fill = Gender)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Estimated Osteoporosis Population in England (2022)",
-    y = "Population at Risk") +
+  labs(y = 'Osteoporosis Population') +
   scale_color_manual()+
 #  ylim(0, max(percentage_of_women) * 1.3) +
   theme_bw() +
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold)
-print(p+labs(y= "Population at Risk"))
+print(p+labs(y= "Osteoporosis Population"))
 
 dev.off()
