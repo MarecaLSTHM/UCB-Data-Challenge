@@ -139,7 +139,7 @@ forecast_values <- forecast(best_model, h = forecast_horizon)
 #####this plots fig 11.2
 png("output/prediction_bisphosphates_2.png")
 par(family = "serif", font = 2)
-plot(forecast_values, ylab="total prescriptions", xlab="month",ylim=c(0,600000))
+plot(forecast_values, ylab="Total prescriptions", xlab="Month",ylim=c(0,600000))
 
 dev.off()
 
