@@ -101,8 +101,7 @@ ggplot(plot_data, aes(x = months_since_cutoff)) +
   geom_line(aes(y = forecast_mean, color = "Forecasted"), size = 1.2) +
   labs(
     y = "Prescriptions",
-    x = "Months since cutoff",
-    title = "Predictions for the 12 months versus testing data set"
+    x = "Months since cutoff"
   ) +
   theme_bw() +
   scale_color_manual(
@@ -134,7 +133,7 @@ forecast_values <- forecast(best_model, h = forecast_horizon)
 
 png("output/prediction_bisphosphates_2.png")
 par(family = "serif", font = 2)
-plot(forecast_values, main = "Bisphosphonates Forecast", ylab="total prescriptions", xlab="month",ylim=c(0,600000))
+plot(forecast_values, ylab="total prescriptions", xlab="month",ylim=c(0,600000))
 
 dev.off()
 
