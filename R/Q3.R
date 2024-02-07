@@ -48,8 +48,7 @@ df_long <- tidyr::pivot_longer(df_over_50, cols = -Gender, names_to = "Year", va
 png("output/predicted_osteoporosis.png")
 ggplot(df_long, aes(x = Year, y = Value, fill = Gender)) +
   geom_bar(stat = "identity") +
-  labs(title = "Predicted Osteoporosis population",
-       x = "Year",
+  labs(x = "Year",
        y = "Population(thousands)",
        fill = "Gender") +
   scale_fill_manual(values = c("Pink", "Blue"), name = "Gender") + 

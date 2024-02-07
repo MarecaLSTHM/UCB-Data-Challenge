@@ -96,8 +96,7 @@ ggplot(plot_data, aes(x = months_since_cutoff)) +
   geom_line(aes(y = forecast_mean, color = "Forecasted"), size = 1.2) +
   labs(
     y = "Prescriptions",
-    x = "Months since cutoff",
-    title = "Predictions for the 12 months verus testing data set"
+    x = "Months since cutoff"
   ) +
   theme_bw() +
   ylim(0, 6000) +
@@ -123,7 +122,7 @@ forecast_values <- forecast(best_model, h = forecast_horizon)
 
 png("output/prediction_denosomab_2.png")
 par(family = "serif", font = 2)
-plot(forecast_values, main = "Denosomab Forecast", ylab="total prescriptions", xlab="month", ylim=c(0,6000))
+plot(forecast_values,  ylab="total prescriptions", xlab="month", ylim=c(0,6000))
 
 dev.off()
 
