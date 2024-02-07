@@ -13,4 +13,4 @@ use to reproduce any output.
 
 The **output folder** stores all the output data in particular the images with the graphs used in the team report. 
 
-For reproducibility the code that outputs an images has been commented out and running the entire script should render the graph in the Rstudio Plots tabs.
+For reproducibility the code that outputs any images has been commented out and running the entire script should render the graph in the Rstudio Plots tabs.
