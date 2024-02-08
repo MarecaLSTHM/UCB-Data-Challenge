@@ -2,7 +2,6 @@ library(tidyverse)
 library(sf)
 library(here)
 library(dplyr)
-library(kableExtra)
 library(ggpubr)
 library(ggplot2)
 library(scales)
@@ -98,7 +97,6 @@ total_prescriptions_by_region$per_capita<- total_prescriptions_by_region$total_p
 merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_id")
 
 # Plot the total prescriptions of bisphosphonates per region
-# png(filename = "output/bisphosphates_total_by_UK_region.png", width = 800, height = 600, units = "px", pointsize = 12)
 ggplot(merged_data) +
   geom_sf(aes(fill = total_prescriptions), 
           color = "white", 
@@ -110,5 +108,5 @@ ggplot(merged_data) +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank()) 
-# dev.off()
+
 

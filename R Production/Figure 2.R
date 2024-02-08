@@ -1,9 +1,12 @@
 library(ggthemes)
 library(data.table)
-
-
-# This will create an image file to be saved in the output folder Figure 2 in report
-png(filename = "output/df_little_drugs_with_time_without_geography.png")
+library(tidyverse)
+library(dplyr)
+library(ggpubr)
+library(ggplot2)
+library(scales)
+library(RColorBrewer)
+library(ggthemes)
 
 # Read in prescription data of Bisphosphonates
 df_BIS=read.csv('data/BISPHOSPHATES_NHS_REGIONS.csv')
@@ -65,5 +68,3 @@ trend_plot <- ggplot(df_drug_long_sub, aes(x = Year, y = Values)) +
   theme_bw()+
   theme(text=element_text(family="Times", size=12)) #Times New Roman, 12pt, Bold 
 print(trend_plot+labs(y= "Number of Prescriptions"))
-
-dev.off()

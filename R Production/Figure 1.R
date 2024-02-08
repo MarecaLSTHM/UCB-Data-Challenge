@@ -1,18 +1,12 @@
 library(ggthemes)
 library(data.table)
 library(tidyverse)
-library(sf)
-library(here)
 library(dplyr)
-library(kableExtra)
 library(ggpubr)
 library(ggplot2)
 library(scales)
 library(RColorBrewer)
 
-
-# This will create an image file to be saved in the output folder Figure 1 in report
-# png(filename = "output/df_drugs_with_time_without_geography.png")
 
 # Read in prescription data of Bisphosphonates
 df_BIS=read.csv('data/BISPHOSPHATES_NHS_REGIONS.csv')
@@ -64,7 +58,7 @@ colnames(df_drug_date_long) <- c('Year',
                                  'Medication', 
                                  'Values')
 
-# Plot Prescription Trends from 2019-2023
+# Plot Prescription Trends from 2018-2023
 trend_plot <- ggplot(df_drug_date_long, aes(x = Year, y = Values)) + 
   geom_line(aes(colour = Medication, group = Medication))+
   scale_y_continuous(labels = scales::label_number_si()) +

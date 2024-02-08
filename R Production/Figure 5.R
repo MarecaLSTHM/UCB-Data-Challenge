@@ -96,7 +96,6 @@ merged_data <- inner_join(regions, total_prescriptions_by_region, by = "region_i
 
 
 # Plotting the map for prescriptions of Bisphophonates per capita
-# png("output/yearly_bisphosphonate_prescriptions_per_patients.png")
 ggplot(merged_data) +
   geom_sf(aes(fill = per_capita), 
           color = "white", 
@@ -108,4 +107,4 @@ ggplot(merged_data) +
   theme(panel.grid = element_blank(), 
         axis.text = element_blank(),   
         axis.ticks = element_blank())
-# dev.off()
+

@@ -62,14 +62,13 @@ time_series_plot <- ggplot(combined_data, aes(x = date, y = y_items,
 # Display the plot
 print(time_series_plot)
 
-# Print the PNG output to the output folder
-png("output/bisphosphonates_regions_by_time.png")
+# Print the plot to show Bisphosphonates trends
 ggplot(combined_data, aes(x = date, y = y_items, 
                           color = Region, shape = Region)) +
   geom_line() +
   geom_point() + 
-  labs(title = "Prescription trends of Bisphosphonates (past 5 years)",
-       x = "Date",
+  labs(# title = "Prescription trends of Bisphosphonates (past 5 years)",
+       x = "Year",
        y = "Prescriptions",
        color = "Region",
        shape = "Region") +
@@ -81,7 +80,5 @@ ggplot(combined_data, aes(x = date, y = y_items,
                                 "East of England" = 21,
                                 "South West"= 22)) +
   scale_y_continuous(labels = scales::label_number_si()) +
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y")  # Center the title
-
-dev.off()
+  theme_bw()
 
